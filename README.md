@@ -2,7 +2,7 @@
 
 [![HitCount](http://hits.dwyl.io/ChristianVisintin/libBMPP.svg)](http://hits.dwyl.io/ChristianVisintin/libBMPP) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/libBMPP/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
-Lib **Bitmap Plus Plus**
+Lib **Bitmap Plus Plus**  
 Developed by *Christian Visintin*
 
 Version 0.0.1 (Under development)
