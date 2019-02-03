@@ -397,16 +397,16 @@ bool Bmp24::rotate(int degrees) {
     header->printSizeW = transitionAttr;
   }
 
-    std::vector<std::vector<RGBPixel*>> currentPixelMatrix;
-    int counter = -1;
-    //Store pixels in a matrix
-    for (size_t row = 0; row < previousHeight; row++) {
-      std::vector<RGBPixel*> rowVector;
-      for (size_t column = 0; column < previousWidth; column++) {
-        rowVector.push_back(pixelArray.at(++counter));
-      }
-      currentPixelMatrix.push_back(rowVector);
+  std::vector<std::vector<RGBPixel*>> currentPixelMatrix;
+  int counter = -1;
+  //Store pixels in a matrix
+  for (size_t row = 0; row < previousHeight; row++) {
+    std::vector<RGBPixel*> rowVector;
+    for (size_t column = 0; column < previousWidth; column++) {
+      rowVector.push_back(pixelArray.at(++counter));
     }
+    currentPixelMatrix.push_back(rowVector);
+  }
 
   if (degrees == 270 || degrees == 90) {
     std::vector<std::vector<RGBPixel*>> rotatedPixelMatrix;
@@ -506,6 +506,14 @@ RGBPixel* Bmp24::getPixelAt(int index) {
   }
   return pixelArray.at(index);
 }
+
+/**
+ * @function rountToMultiple
+ * @description: rount provided integer to the nearest bigger multiple of 'multiple'
+ * @param int
+ * @param int
+ * @returns int
+**/
 
 int Bmp24::roundToMultiple(int toRound, int multiple) {
   if (multiple == 0)
