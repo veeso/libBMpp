@@ -26,6 +26,7 @@
 
 #include <pixels/rgbpixel.hpp>
 
+#include <cstddef>
 #include <vector>
 
 #define BMP_ID 0x424D

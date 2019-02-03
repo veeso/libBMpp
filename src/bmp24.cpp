@@ -23,6 +23,11 @@
 
 #include <bmp24.hpp>
 
+#ifdef BMP_DEBUG
+#include <iostream>
+#include <string>
+#endif
+
 using namespace bmp;
 
 /**
@@ -58,7 +63,6 @@ Bmp24::~Bmp24() {
  * @returns bool
 **/
 
-#include <iostream>
 
 bool Bmp24::decodeBmp(uint8_t* bmpData, size_t dataSize) {
 
@@ -379,65 +383,83 @@ bool Bmp24::rotate(int degrees) {
     return false;
   }
 
-  uint32_t currentWidth = header->width;
-  uint32_t currentHeight = header->height;
-  std::vector<std::vector<RGBPixel*>> currentPixelMatrix;
-  std::vector<std::vector<RGBPixel*>> rotatedPixelMatrix;
+  uint32_t previousWidth = header->width;
+  uint32_t previousHeight = header->height;
 
   if (degrees == 90 || degrees == 270) {
     //Exchange header attributes
     //Update width and height
-    header->height = currentWidth;
-    header->width = currentHeight;
+    header->height = previousWidth;
+    header->width = previousHeight;
     //Rotate also printH/W
     uint32_t transitionAttr = header->printSizeH;
     header->printSizeH = header->printSizeW;
     header->printSizeW = transitionAttr;
   }
-  //size_t absoluteIndex = (row * currentWidth) + column;
 
-  if (degrees == 90) {
-    //Current Matrix
-    for (size_t row = 0; row < currentHeight; row++) {
+    std::vector<std::vector<RGBPixel*>> currentPixelMatrix;
+    int counter = -1;
+    //Store pixels in a matrix
+    for (size_t row = 0; row < previousHeight; row++) {
       std::vector<RGBPixel*> rowVector;
-      for (size_t column = 0; column < currentWidth; column++) {
-        rowVector.push_back(pixelArray.at((row * currentHeight) + column));
-        RGBPixel* pxPtr = rowVector.at(column);
-        std::cout << "(" << std::to_string(pxPtr->getRed()) << "," << std::to_string(pxPtr->getGreen()) << "," << std::to_string(pxPtr->getBlue()) << ") ";
+      for (size_t column = 0; column < previousWidth; column++) {
+        rowVector.push_back(pixelArray.at(++counter));
       }
-      std::cout << std::endl;
       currentPixelMatrix.push_back(rowVector);
     }
-    std::cout << "\n\n\n\n";
+
+  if (degrees == 270 || degrees == 90) {
+    std::vector<std::vector<RGBPixel*>> rotatedPixelMatrix;
     //Create rotated matrix
-    for (size_t row = 0; row < currentWidth; row++) {
+    counter = -1;
+    for (size_t row = 0; row < previousWidth; row++) {
       std::vector<RGBPixel*> rowVector;
-      for (size_t column = 0; column < currentHeight; column++) {
-        rowVector.push_back(pixelArray.at((column * currentWidth) + row));
+      for (size_t column = 0; column < previousHeight; column++) {
+        rowVector.push_back(pixelArray.at(++counter));
       }
       rotatedPixelMatrix.push_back(rowVector);
     }
-    for (size_t i = 0; i < currentHeight; i++) {
-      for (size_t j = 0; j < currentWidth; j++) {
-        rotatedPixelMatrix.at(j).at(currentHeight - 1 - i) = currentPixelMatrix.at(i).at(j);
+    if (degrees == 270) {
+      //Rotate 270 degrees
+      for (size_t i = 0; i < previousHeight; i++) {
+        for (size_t j = 0; j < previousWidth; j++) {
+          rotatedPixelMatrix.at(j).at(previousHeight - 1 - i) = currentPixelMatrix.at(i).at(j);
+        }
+      }
+    } else {
+      //Rotate 90 degrees
+      for (size_t i = 0; i < previousHeight; i++) {
+        for (size_t j = 0; j < previousWidth; j++) {
+         rotatedPixelMatrix.at(previousWidth - 1 - j).at(i) = currentPixelMatrix.at(i).at(j);
+        }
       }
     }
-
+    //Convert rotated matrix to pixelArray
+    counter = -1;
+    for (size_t row = 0; row < previousWidth; row++) {
+      for (size_t column = 0; column < previousHeight; column++) {
+        pixelArray.at(++counter) = rotatedPixelMatrix.at(row).at(column);
+      }
+    }
   } else if (degrees == 180) {
-    for (size_t row = 0; row < currentHeight; row++) {
-      for (size_t column = 0; column < currentWidth; column++) {
-        rotatedPixelMatrix.at(row).at(column) = currentPixelMatrix.at(currentWidth - 1 - row).at(currentHeight - 1 - column);
+    //Swap elements to rotate image
+    for (size_t i = 0; i < previousHeight; i++) {
+      for (size_t j = 0, k = previousWidth - 1; j < k; j++, k--) {
+        std::swap(currentPixelMatrix.at(i).at(j), currentPixelMatrix.at(i).at(k));
       }
     }
-  }
-  //Convert rotated matrix to pixelArray
-  for (size_t row = 0; row < currentWidth; row++) {
-    for (size_t column = 0; column < currentHeight; column++) {
-      pixelArray.at((column * currentWidth) + row) = rotatedPixelMatrix.at(row).at(column);
+    for (size_t j = 0; j < previousWidth; j++) {
+      for (size_t i = 0, k = previousHeight - 1; i < k; i++, k--) {
+        std::swap(currentPixelMatrix.at(i).at(j), currentPixelMatrix.at(k).at(j));
+      }
     }
-  }
-  for (auto& pxPtr : pixelArray) {
-    std::cout << "(" << std::to_string(pxPtr->getRed()) << "," << std::to_string(pxPtr->getGreen()) << "," << std::to_string(pxPtr->getBlue()) << ") ";
+    //Convert rotated matrix to pixelArray
+    counter = -1;
+    for (size_t row = 0; row < previousHeight; row++) {
+      for (size_t column = 0; column < previousWidth; column++) {
+        pixelArray.at(++counter) = currentPixelMatrix.at(row).at(column);
+      }
+    }
   }
   return true;
 }
