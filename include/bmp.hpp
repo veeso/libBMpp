@@ -68,7 +68,6 @@ public:
   //Getters
   size_t getWidth();
   size_t getHeight();
-  bmp::Pixel* getPixelAt(int index);
 
 protected:
   int roundToMultiple(int toRound, int multiple);
