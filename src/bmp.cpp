@@ -383,9 +383,65 @@ bool Bmp::rotate(int degrees) {
 **/
 
 bool Bmp::flip(char flipType) {
-  //TODO: implement this
+  
+  //Invalid flip operation
+  if (flipType != HORIZONTAL_FLIP && flipType != VERTICAL_FLIP) {
+    return false;
+  }
+  //Check if header exists
+  if (header == nullptr) {
+    return false;
+  }
+
+  //Apply vertical flip
+  if (flipType == VERTICAL_FLIP) {
+    //Rotate vertically
+    if (!rotate(180)) {
+      return false;
+    }
+    //And then flip horizontally
+    return flip(HORIZONTAL_FLIP);
+  } else {
+    //Apply horizontal flip
+    std::vector<std::vector<Pixel*>> pixelMatrix;
+    int counter = -1;
+    //Store pixels in a matrix
+    for (size_t row = 0; row < header->height; row++) {
+      std::vector<Pixel*> rowVector;
+      for (size_t column = 0; column < header->width; column++) {
+        rowVector.push_back(pixelArray.at(++counter));
+      }
+      pixelMatrix.push_back(rowVector);
+    }
+    //Flip horizontally
+    counter = -1;
+    for (size_t row = 0; row < header->height; row++) {
+      //Save counter at new line
+      int beginRowCounter = counter;
+      for (size_t column = 0; column < header->width / 2; column++) {
+        //Swap elements on a row
+        std::swap(pixelMatrix.at(row).at(column), pixelMatrix.at(row).at(header->width - 1 - column));
+        //Put left side element on left side of row in pixel array
+        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
+        //Put right side element on right side of row in pixel array
+        pixelArray.at((header->width - column) + beginRowCounter) = pixelMatrix.at(row).at(header->width - 1 - column);
+      }
+      //Add to counter missing part to finish line
+      counter += header->width / 2;
+    }
+  }
   return true;
 }
+
+/* Specchiato 4 inverso effect
+    for (size_t row = 0; row < header->height; row++) {
+      for (size_t column = 0; column < header->width / 2; column++) {
+        std::swap(pixelMatrix.at(row).at(column), pixelMatrix.at(row).at(header->width - 1 - column));
+        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
+        pixelArray.at(pixelArray.size() - 1 - counter) = pixelMatrix.at(row).at(header->width - 1 - column);
+      }
+    }
+*/
 
 /**
  * @function getWidth

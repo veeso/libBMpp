@@ -35,6 +35,8 @@ int main(int argc, char* argv[]) {
     std::cout << "0: print pixels" << std::endl;
     std::cout << "1: toGreyScale()" << std::endl;
     std::cout << "2: rotate()" << std::endl;
+    std::cout << "3: flip('V')" << std::endl;
+    std::cout << "4: flip('H')" << std::endl;
     return 1;
   }
 
@@ -42,11 +44,17 @@ int main(int argc, char* argv[]) {
   std::string outFilename = argv[2];
   int command = -1;
   int commandArg = 0;
+  char commandArgChar = 0;
   if (argc >= 4) {
     command = std::stoi(std::string(argv[3]));
   }
   if (argc >= 5) {
-    commandArg = std::stoi(std::string(argv[4]));
+    try {
+      commandArg = std::stoi(std::string(argv[4]));
+    } catch (std::invalid_argument& ex) {
+      std::cout << "Invalid argument exception: " << ex.what() << std::endl;
+      return 1;
+    }
   }
 
   std::ifstream bmpFile;
@@ -97,6 +105,15 @@ int main(int argc, char* argv[]) {
   case 2:
     std::cout << "Applying: rotate(" << commandArg << ")\n";
     myBmp->rotate(commandArg);
+    break;
+  case 3:
+    std::cout << "Applying: flip('V')\n";
+    myBmp->flip(VERTICAL_FLIP);
+    break;
+  case 4:
+    std::cout << "Applying: flip('H')\n";
+    myBmp->flip(HORIZONTAL_FLIP);
+    break;
   default:
     break;
   }
