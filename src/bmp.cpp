@@ -195,7 +195,6 @@ uint8_t* Bmp::encodeBmp(size_t* dataSize) {
   //Get our fundamental parameters
   size_t nextMultipleOf4 = roundToMultiple(header->width * (header->bitsPerPixel / 8), 4);
   size_t paddingSize = nextMultipleOf4 - header->width * (header->bitsPerPixel / 8);
-  size_t realRowSize = (header->width * (header->bitsPerPixel / 8));
   size_t totalRowSize = (header->width * (header->bitsPerPixel / 8)) + paddingSize;
   //Recalc dataSize
   int pxDataSize = totalRowSize * header->height;

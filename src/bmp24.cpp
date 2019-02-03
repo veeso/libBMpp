@@ -102,7 +102,6 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
   size_t nextMultipleOf4 = roundToMultiple(header->width * (header->bitsPerPixel / 8), 4);
   size_t paddingSize = nextMultipleOf4 - header->width * (header->bitsPerPixel / 8);
   size_t realRowSize = (header->width * (header->bitsPerPixel / 8));
-  size_t totalRowSize = (header->width * (header->bitsPerPixel / 8)) + paddingSize;
   //Fill header and get bmpData with fixed size
   uint8_t* bmpData = Bmp::encodeBmp(dataSize);
   //Return nullptr if needed
@@ -114,7 +113,7 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
   int pxIndex = -1;
   size_t rowPositionCounter = 0;
   for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize;) {
-    if (++pxIndex >= pixelArray.size()) {
+    if (++pxIndex >= static_cast<int>(pixelArray.size())) {
       break;
     }
     //Set pixel
@@ -147,7 +146,7 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
 
 bool Bmp24::setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue) {
 
-  if (index >= pixelArray.size()) {
+  if (index >= static_cast<int>(pixelArray.size())) {
     return false;
   }
   RGBPixel* reqPixel = reinterpret_cast<RGBPixel*>(pixelArray.at(index));
@@ -192,7 +191,7 @@ bool Bmp24::toGreyScale(int greyLevels /*= 255*/) {
 
 RGBPixel* Bmp24::getPixelAt(int index) {
 
-  if (index >= pixelArray.size()) {
+  if (index >= static_cast<int>(pixelArray.size())) {
     return nullptr;
   }
   return reinterpret_cast<RGBPixel*>(pixelArray.at(index));
