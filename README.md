@@ -13,6 +13,17 @@ Version 0.0.1 (Under development)
 
 libBMPP is a library for working with Bitmaps in modern C++, which allows you to manipulate bitmaps images.
 
+## Build
+
+libBMPP build is achievable through autotools, issuing the following commands:
+
+```sh
+./autogen.sh
+./configure
+make
+make install
+```
+
 ## Documentation
 
 TODO
