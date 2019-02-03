@@ -25,34 +25,11 @@
 #define BMP24_HPP
 
 #include <pixels/rgbpixel.hpp>
-
-#include <cstddef>
-#include <vector>
-
-#define BMP_ID 0x424D
+#include <bmp.hpp>
 
 namespace bmp {
 
-typedef struct Header {
-  uint16_t bmpId;
-  uint32_t fileSize;
-  uint32_t unused = 0;
-  uint32_t dataOffset = 54;
-  //DIB
-  uint32_t dibSize = 40;
-  uint32_t width;
-  uint32_t height;
-  uint16_t colorPlanes = 1;
-  uint16_t bitsPerPixel = 24;
-  uint32_t biRgb = 0;
-  uint32_t dataSize;
-  uint32_t printSizeW;
-  uint32_t printSizeH;
-  uint32_t paletteSize;
-  uint32_t importantColors;
-} Header;
-
-class Bmp24 {
+class Bmp24 : public Bmp {
 
 public:
   Bmp24();
@@ -63,18 +40,8 @@ public:
   //Image operations
   bool setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue);
   bool toGreyScale(int greyLevels = 255);
-  bool rotate(int degrees);
-  /*flip()
-  */
   //Getters
-  size_t getWidth();
-  size_t getHeight();
   bmp::RGBPixel* getPixelAt(int index);
-
-private:
-  int roundToMultiple(int toRound, int multiple);
-  Header* header;
-  std::vector<bmp::RGBPixel*> pixelArray;
 
 };
 

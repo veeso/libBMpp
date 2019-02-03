@@ -24,11 +24,11 @@
 #ifndef RGBPIXEL_HPP
 #define RGBPIXEL_HPP
 
-#include <cinttypes>
+#include <pixels/pixel.hpp>
 
 namespace bmp {
 
-class RGBPixel {
+class RGBPixel : public Pixel {
 
 public:
   RGBPixel(uint8_t red, uint8_t green, uint8_t blue);
