@@ -36,6 +36,7 @@ using namespace bmp;
 **/
 
 Bmp24::Bmp24() : Bmp() {
+  pixelArray.clear();
 }
 
 /**
@@ -46,8 +47,11 @@ Bmp24::Bmp24() : Bmp() {
 Bmp24::~Bmp24() {
   //Delete pixels
   for (auto& pixel : pixelArray) {
-    delete pixel;
+    RGBPixel* rgbPixel = reinterpret_cast<RGBPixel*>(pixel);
+    delete rgbPixel;
+    pixel = nullptr;
   }
+  pixelArray.clear();
 }
 
 /**
@@ -71,7 +75,7 @@ bool Bmp24::decodeBmp(uint8_t* bmpData, size_t dataSize) {
   size_t paddingSize = nextMultipleOf4 - (header->width * (header->bitsPerPixel / 8));
   size_t realRowSize = (header->width * (header->bitsPerPixel / 8));
   size_t rowPositionCounter = 0;
-  for (size_t dataPtr = header->dataOffset - 1; dataPtr < dataSize;) {
+  for (size_t dataPtr = header->dataOffset - 1; dataPtr < header->fileSize - 1;) {
     //Store Pixels for each byte NOTE: BMP is BGR
     uint8_t blue = bmpData[++dataPtr];
     uint8_t green = bmpData[++dataPtr];

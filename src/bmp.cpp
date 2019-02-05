@@ -47,7 +47,7 @@ Bmp::Bmp() {
 Bmp::~Bmp() {
   //Delete header
   if (header != nullptr) {
-    delete[] header;
+    delete header;
   }
 }
 

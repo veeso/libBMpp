@@ -30,7 +30,7 @@ namespace bmp {
 
 class Pixel {
 public:
-  ~Pixel() = default;
+  virtual ~Pixel() = default;
 
 };
 

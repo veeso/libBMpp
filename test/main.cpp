@@ -44,7 +44,6 @@ int main(int argc, char* argv[]) {
   std::string outFilename = argv[2];
   int command = -1;
   int commandArg = 0;
-  char commandArgChar = 0;
   if (argc >= 4) {
     command = std::stoi(std::string(argv[3]));
   }
@@ -56,6 +55,8 @@ int main(int argc, char* argv[]) {
       return 1;
     }
   }
+
+  do {
 
   std::ifstream bmpFile;
   bmpFile.open(bmpFilename, std::ios::binary | std::ios::ate);
@@ -140,5 +141,36 @@ int main(int argc, char* argv[]) {
   delete[] newBmp;
   delete[] dataBuffer;
   delete myBmp;
+
+  //Ask for next commands
+  std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [operationArg]" << std::endl;
+  std::cout << "Operations are:" << std::endl;
+  std::cout << "0: print pixels" << std::endl;
+  std::cout << "1: toGreyScale()" << std::endl;
+  std::cout << "2: rotate()" << std::endl;
+  std::cout << "3: flip('V')" << std::endl;
+  std::cout << "4: flip('H')" << std::endl;
+  std::cout << "bmpFile (QUIT to exit): ";
+  std::cin >> bmpFilename;
+  if (bmpFilename == "QUIT") {
+    break;
+  }
+  std::cout << "outBmpFile: ";
+  std::cin >> outFilename;
+  std::string operationStr;
+  std::cout << "Operation: ";
+  std::cin >> operationStr;
+  command = std::stoi(operationStr);
+  std::string operationArg;
+  std::cout << "OperationArg: ";
+  std::cin >> operationArg;
+  try {
+  commandArg = std::stoi(operationArg);
+  } catch (std::invalid_argument& ex) {
+    commandArg = 0;
+  }
+
+  } while (true);
+
   return 0;
 }
