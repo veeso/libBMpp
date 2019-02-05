@@ -109,11 +109,11 @@ int main(int argc, char* argv[]) {
     break;
   case 3:
     std::cout << "Applying: flip('V')\n";
-    myBmp->flip(VERTICAL_FLIP);
+    myBmp->flipVertical();
     break;
   case 4:
     std::cout << "Applying: flip('H')\n";
-    myBmp->flip(HORIZONTAL_FLIP);
+    myBmp->flipHorizontal();
     break;
   default:
     break;

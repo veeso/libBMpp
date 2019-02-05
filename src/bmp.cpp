@@ -28,6 +28,10 @@
 #include <string>
 #endif
 
+#define BMP_ID 0x424D
+#define HORIZONTAL_FLIP 'H'
+#define VERTICAL_FLIP 'V'
+
 using namespace bmp;
 
 /**
@@ -376,6 +380,64 @@ bool Bmp::rotate(int degrees) {
 }
 
 /**
+ * @function flipHorizontal
+ * @description flip image horizontally
+ * @returns bool
+**/
+
+bool Bmp::flipHorizontal() {
+  return this->flip(HORIZONTAL_FLIP);
+}
+
+/**
+ * @function flipHorizontal
+ * @description flip image horizontally
+ * @returns bool
+**/
+
+bool Bmp::flipVertical() {
+  return this->flip(VERTICAL_FLIP);
+}
+
+/* Specchiato 4 inverso effect
+    for (size_t row = 0; row < header->height; row++) {
+      for (size_t column = 0; column < header->width / 2; column++) {
+        std::swap(pixelMatrix.at(row).at(column), pixelMatrix.at(row).at(header->width - 1 - column));
+        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
+        pixelArray.at(pixelArray.size() - 1 - counter) = pixelMatrix.at(row).at(header->width - 1 - column);
+      }
+    }
+*/
+
+/**
+ * @function getWidth
+ * @description: returns the image width
+ * @returns size_t
+**/
+
+size_t Bmp::getWidth() {
+  if (header != nullptr) {
+    return header->width;
+  } else {
+    return 0;
+  }
+}
+
+/**
+ * @function getHeight
+ * @description: returns the image height
+ * @returns size_t
+**/
+
+size_t Bmp::getHeight() {
+  if (header != nullptr) {
+    return header->height;
+  } else {
+    return 0;
+  }
+}
+
+/**
  * @function flip
  * @description: flip image horizontally or vertically based on argument
  * @param char
@@ -446,44 +508,6 @@ bool Bmp::flip(char flipType) {
     }
   }
   return true;
-}
-
-/* Specchiato 4 inverso effect
-    for (size_t row = 0; row < header->height; row++) {
-      for (size_t column = 0; column < header->width / 2; column++) {
-        std::swap(pixelMatrix.at(row).at(column), pixelMatrix.at(row).at(header->width - 1 - column));
-        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
-        pixelArray.at(pixelArray.size() - 1 - counter) = pixelMatrix.at(row).at(header->width - 1 - column);
-      }
-    }
-*/
-
-/**
- * @function getWidth
- * @description: returns the image width
- * @returns size_t
-**/
-
-size_t Bmp::getWidth() {
-  if (header != nullptr) {
-    return header->width;
-  } else {
-    return 0;
-  }
-}
-
-/**
- * @function getHeight
- * @description: returns the image height
- * @returns size_t
-**/
-
-size_t Bmp::getHeight() {
-  if (header != nullptr) {
-    return header->height;
-  } else {
-    return 0;
-  }
 }
 
 /**

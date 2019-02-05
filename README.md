@@ -114,14 +114,22 @@ Rotates the BMP image of 'degrees', which must be multiple of 90 (90/180/270/360
 
 If was unable to rotate the image, returns false
 
-#### flip
+#### flipVertical
 
 ```cpp
-bool flip(char flipType);
+bool flipVertical();
 ```
 
-Flip the image horizontally or vertically, based on provided flipType.
-Accepted values for flipType are HORIZONTAL_FLIP and VERTICAL_FLIP
+Flip the image vertically
+
+#### flipHorizontal
+
+```cpp
+bool flipHorizontal();
+```
+
+Flip the image vertically
+
 
 ```cpp
 #define HORIZONTAL_FLIP 'H'

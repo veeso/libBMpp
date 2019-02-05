@@ -29,10 +29,6 @@
 #include <cstddef>
 #include <vector>
 
-#define BMP_ID 0x424D
-#define HORIZONTAL_FLIP 'H'
-#define VERTICAL_FLIP 'V'
-
 namespace bmp {
 
 typedef struct Header {
@@ -64,12 +60,14 @@ public:
   uint8_t* encodeBmp(size_t* dataSize);
   //Image operations
   bool rotate(int degrees);
-  bool flip(char flipType);
+  bool flipVertical();
+  bool flipHorizontal();
   //Getters
   size_t getWidth();
   size_t getHeight();
 
 protected:
+  bool flip(char flipType);
   int roundToMultiple(int toRound, int multiple);
   bmp::Header* header;
   std::vector<bmp::Pixel*> pixelArray;
