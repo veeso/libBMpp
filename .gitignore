@@ -89,3 +89,5 @@ modulesSrc.list
 *.bmp
 test/test
 test/toeink*
+test/bmp24_test
+test/monochrome_test
