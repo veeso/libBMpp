@@ -116,7 +116,7 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
   //Fill data
   int pxIndex = -1;
   size_t rowPositionCounter = 0;
-  for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize;) {
+  for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize - 1;) {
     if (++pxIndex >= static_cast<int>(pixelArray.size())) {
       break;
     }
