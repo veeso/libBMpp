@@ -88,3 +88,4 @@ Makefile
 modulesSrc.list
 *.bmp
 test/test
+test/toeink*

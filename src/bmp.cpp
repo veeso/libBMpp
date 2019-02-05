@@ -395,13 +395,28 @@ bool Bmp::flip(char flipType) {
 
   //Apply vertical flip
   if (flipType == VERTICAL_FLIP) {
-    //Rotate vertically
-    if (!rotate(180)) {
-      return false;
+    //Apply horizontal flip
+    std::vector<std::vector<Pixel*>> pixelMatrix;
+    int counter = -1;
+    //Store pixels in a matrix
+    for (size_t row = 0; row < header->height; row++) {
+      std::vector<Pixel*> rowVector;
+      for (size_t column = 0; column < header->width; column++) {
+        rowVector.push_back(pixelArray.at(++counter));
+      }
+      pixelMatrix.push_back(rowVector);
     }
-    //And then flip horizontally
-    return flip(HORIZONTAL_FLIP);
-  } else {
+    for (size_t row = 0; row < header->height / 2; row++) {
+      std::swap(pixelMatrix.at(row), pixelMatrix.at(header->height - 1 - row));
+    }
+    //Convert rotated matrix to pixelArray
+    counter = -1;
+    for (size_t row = 0; row < header->height; row++) {
+      for (size_t column = 0; column < header->width; column++) {
+        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
+      }
+    }
+  } else { 
     //Apply horizontal flip
     std::vector<std::vector<Pixel*>> pixelMatrix;
     int counter = -1;
