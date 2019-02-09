@@ -77,6 +77,12 @@ Bmp();
 
 Bmp constructor initializes header to nullptr
 
+```cpp
+Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+```
+
+It is possible to create a new Bmp object passing a pixel array (of any kind), width and height of the image to create a new bitmap.
+
 #### Destructor
 
 ```cpp
