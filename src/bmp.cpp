@@ -23,6 +23,8 @@
 
 #include <bmp.hpp>
 
+#include <cstring>
+
 #ifdef BMP_DEBUG
 #include <iostream>
 #include <string>
@@ -80,6 +82,7 @@ Bmp::~Bmp() {
     pixel = nullptr;
   }
   pixelArray.clear();
+  delete[] dibData;
 }
 
 /**
@@ -206,6 +209,11 @@ bool Bmp::decodeBmp(uint8_t* bmpData, size_t dataSize) {
   header->importantColors = header->importantColors << 8;
   header->importantColors += bmpData[50];
 
+  //Save dibData
+  size_t dibDataSize = header->dataOffset - 54;
+  dibData = new uint8_t[dibDataSize];
+  memcpy(dibData, bmpData + 54, dibDataSize);
+
   return true;
 
 }
@@ -231,8 +239,8 @@ uint8_t* Bmp::encodeBmp(size_t* dataSize) {
   int pxDataSize = totalRowSize * header->height;
   //Recalc dataSize
   header->dataSize = pxDataSize;
-  //We need to allocate the buffer now (headerSize [54] + dataSize)
-  *dataSize = 54 + header->dataSize;
+  //We need to allocate the buffer now (dataOffset + dataSize)
+  *dataSize = header->dataOffset + header->dataSize;
   uint8_t* bmpData = new uint8_t[*dataSize];
   //Fill header
   bmpData[0] = 'B';
@@ -303,6 +311,8 @@ uint8_t* Bmp::encodeBmp(size_t* dataSize) {
   bmpData[51] = 0;
   bmpData[52] = 0;
   bmpData[53] = 0;
+  //Store to bmpData dbData
+  memcpy(bmpData + 54, dibData, (header->dataOffset - 54));
 
   return bmpData;
 

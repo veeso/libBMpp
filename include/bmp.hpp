@@ -72,6 +72,7 @@ protected:
   bool flip(char flipType);
   int roundToMultiple(int toRound, int multiple);
   bmp::Header* header;
+  uint8_t* dibData;
   std::vector<bmp::Pixel*> pixelArray;
 
 };
