@@ -33,6 +33,7 @@ class Bmp24 : public Bmp {
 
 public:
   Bmp24();
+  Bmp24(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
   ~Bmp24();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

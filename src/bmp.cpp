@@ -44,6 +44,27 @@ Bmp::Bmp() {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class constructor
+**/
+
+Bmp::Bmp(std::vector<Pixel*> pixelArray, size_t width, size_t height) {
+  //Set pixelArray
+  this->pixelArray = pixelArray;
+  //Create Header
+  header = new Header();
+  header->bmpId = BMP_ID;
+  //FileSize must be set by child class
+  header->width = width;
+  header->height = height;
+  //DataSize must be set by child class
+  //bitsPerPixel must be set by child class
+  header->printSizeW = 
+  header->paletteSize = 0;
+  header->importantColors = 0;
+}
+
+/**
  * @function ~Bmp
  * @description Bmp class destructor
 **/
