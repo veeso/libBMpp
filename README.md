@@ -167,7 +167,7 @@ Bmp24 is a class which extends Bmp class and describes a 24 bits for pixel Bitma
 
 In addition to Bmp methods, it provides the following methods:
 
-#### setPixelAt
+#### Bmp24::setPixelAt
 
 ```cpp
 bool setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue);
@@ -177,7 +177,7 @@ set the RGB value of the pixel in index position.
 
 Returns false if the requested pixel, does not exist.
 
-#### toGreyScale
+#### Bmp24::toGreyScale
 
 ```cpp
 bool toGreyScale(int greyLevels = 255);
@@ -185,13 +185,37 @@ bool toGreyScale(int greyLevels = 255);
 
 Converts a color image to greyScale. Is it possible to specify the amount of grey levels (2 - 255).
 
-#### getPixelAt
+#### Bmp24::getPixelAt
 
 ```cpp
 bmp::RGBPixel* getPixelAt(int index);
 ```
 
 Returns the pointer to the RGBPixel in provided position. If the requested pixel does not exist, returns nullptr
+
+### Bmp8
+
+Bmp8 is a class which extends Bmp class and describes a 8 bits for pixel Bitmap.
+
+In addition to Bmp methods, it provides the following methods:
+
+#### Bmp8::setPixelAt
+
+```cpp
+bool setPixelAt(int index, uint8_t value);
+```
+
+set the 255 value of the pixel in index position.  
+
+Returns false if the requested pixel, does not exist.
+
+#### Bmp8::getPixelAt
+
+```cpp
+bmp::BytePixel* getPixelAt(int index);
+```
+
+Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
 
 ---
 
