@@ -31,6 +31,7 @@ class Bmpmonochrome : public Bmp {
 
 public:
   Bmpmonochrome();
+  Bmpmonochrome(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
   ~Bmpmonochrome();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

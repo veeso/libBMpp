@@ -40,6 +40,25 @@ Bmpmonochrome::Bmpmonochrome() : Bmp() {
 }
 
 /**
+ * @function Bmpmonochrome
+ * @description Bmp class constructor
+**/
+
+Bmpmonochrome::Bmpmonochrome(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+  //Set bits per pixel
+  header->bitsPerPixel = 1;
+  //FileSize must be set by child class
+  size_t nextMultipleOf4 = roundToMultiple(width, 4);
+  size_t paddingSize = nextMultipleOf4 - (header->width);
+  size_t rowSize = paddingSize + (width);
+  size_t dataSize = rowSize * height;
+  header->fileSize = 54 + dataSize;
+  //DataSize must be set by child class
+  header->dataSize = dataSize;
+}
+
+
+/**
  * @function ~Bmpmonochrome
  * @description Bmpmonochrome class destructor
 **/
@@ -70,6 +89,10 @@ bool Bmpmonochrome::decodeBmp(uint8_t* bmpData, size_t dataSize) {
   }
   //Get data
   size_t totalArea = header->width * header->height;
+  size_t nextMultipleOf4 = roundToMultiple(header->width, 4);
+  size_t paddingSize = nextMultipleOf4 - (header->width);
+  size_t realRowSize = (header->width);
+  size_t rowPositionCounter = 0;
   for (size_t dataPtr = header->dataOffset - 1; dataPtr < header->fileSize - 1; dataPtr++) {
     uint8_t currentByte = bmpData[dataPtr];
     for (size_t i = 0; pixelArray.size() <= totalArea && i < 8; i++) {
@@ -77,6 +100,12 @@ bool Bmpmonochrome::decodeBmp(uint8_t* bmpData, size_t dataSize) {
       uint8_t shiftValue = 8 - i;
       uint8_t colorValue = (currentByte >> shiftValue) & 1;
       pixelArray.push_back(new BWPixel(colorValue));
+    }
+    rowPositionCounter++;
+    //If row has been parsed, go to next line
+    if (rowPositionCounter >= realRowSize) {
+      rowPositionCounter = 0;
+      dataPtr += paddingSize;
     }
   }
   return true;
@@ -91,6 +120,9 @@ bool Bmpmonochrome::decodeBmp(uint8_t* bmpData, size_t dataSize) {
 **/
 
 uint8_t* Bmpmonochrome::encodeBmp(size_t* dataSize) {
+  size_t nextMultipleOf4 = roundToMultiple(header->width, 4);
+  size_t paddingSize = nextMultipleOf4 - header->width;
+  size_t realRowSize = (header->width);
   //Fill header and get bmpData with fixed size
   uint8_t* bmpData = Bmp::encodeBmp(dataSize);
   //Return nullptr if needed
@@ -98,6 +130,7 @@ uint8_t* Bmpmonochrome::encodeBmp(size_t* dataSize) {
     return nullptr;
   }
   size_t byteCounter = 0;
+  size_t rowPositionCounter = 0;
   for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize - 1;) {
     //Get byte to write
     uint8_t colorValue = 0;
@@ -109,6 +142,15 @@ uint8_t* Bmpmonochrome::encodeBmp(size_t* dataSize) {
       colorValue = colorValue << (8 - i);
     }
     bmpData[dataPtr] = colorValue;
+    //Check if row has to be closed
+    rowPositionCounter++;
+    if (rowPositionCounter >= realRowSize) {
+      //Fill row with padding and go on new line
+      rowPositionCounter = 0;
+      for (size_t i = 0; i < paddingSize; i++) {
+        bmpData[++dataPtr] = 0;
+      }
+    }
   }
   return bmpData;
 }
