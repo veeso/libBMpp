@@ -45,13 +45,7 @@ Bmp24::Bmp24() : Bmp() {
 **/
 
 Bmp24::~Bmp24() {
-  //Delete pixels
-  for (auto& pixel : pixelArray) {
-    RGBPixel* rgbPixel = reinterpret_cast<RGBPixel*>(pixel);
-    delete rgbPixel;
-    pixel = nullptr;
-  }
-  pixelArray.clear();
+  
 }
 
 /**

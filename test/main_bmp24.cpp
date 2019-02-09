@@ -25,35 +25,43 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
+
+std::vector<std::string> split(const std::string& s, char delimiter) {
+  std::vector<std::string> tokens;
+  std::string token;
+  std::istringstream tokenStream(s);
+  while (std::getline(tokenStream, token, delimiter)) {
+    tokens.push_back(token);
+  }
+  return tokens;
+}
+
 
 int main(int argc, char* argv[]) {
 
   if (argc < 3) {
-    std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [operationArg]" << std::endl;
+    std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [cmdArg1,cmdArg2,...,cmdArgN]" << std::endl;
     std::cout << "Operations are:" << std::endl;
     std::cout << "0: print pixels" << std::endl;
     std::cout << "1: toGreyScale()" << std::endl;
     std::cout << "2: rotate()" << std::endl;
     std::cout << "3: flip('V')" << std::endl;
     std::cout << "4: flip('H')" << std::endl;
+    std::cout << "5: resizeArea(arg1, arg2)" << std::endl;
     return 1;
   }
 
   std::string bmpFilename = argv[1];
   std::string outFilename = argv[2];
   int command = -1;
-  int commandArg = 0;
+  std::vector<std::string> commandArgs;
   if (argc >= 4) {
     command = std::stoi(std::string(argv[3]));
   }
   if (argc >= 5) {
-    try {
-      commandArg = std::stoi(std::string(argv[4]));
-    } catch (std::invalid_argument& ex) {
-      std::cout << "Invalid argument exception: " << ex.what() << std::endl;
-      return 1;
-    }
+    commandArgs = split(std::string(argv[4]), ',');
   }
 
   do {
@@ -99,14 +107,18 @@ int main(int argc, char* argv[]) {
     }
     break;
   }
-  case 1:
+  case 1: {
+    int commandArg = std::stoi(commandArgs.at(0));
     std::cout << "Applying: toGreyScale(" << commandArg << ")\n";
     myBmp->toGreyScale(commandArg);
     break;
-  case 2:
+  }
+  case 2: {
+    int commandArg = std::stoi(commandArgs.at(0));
     std::cout << "Applying: rotate(" << commandArg << ")\n";
     myBmp->rotate(commandArg);
     break;
+  }
   case 3:
     std::cout << "Applying: flip('V')\n";
     myBmp->flipVertical();
@@ -115,6 +127,19 @@ int main(int argc, char* argv[]) {
     std::cout << "Applying: flip('H')\n";
     myBmp->flipHorizontal();
     break;
+  case 5: {
+    size_t width = std::stoi(commandArgs.at(0));
+    size_t height = std::stoi(commandArgs.at(1));
+    size_t xOffset = 0;
+    size_t yOffset = 0;
+    if (commandArgs.size() >= 4) {
+      xOffset = std::stoi(commandArgs.at(2));
+      yOffset = std::stoi(commandArgs.at(3));
+    }
+    std::cout << "Applying: resizeArea(" << width << "," << height << "," << xOffset << "," << yOffset << ");\n";
+    myBmp->resizeArea(width, height, xOffset, yOffset);
+    break;
+  }
   default:
     break;
   }
@@ -143,13 +168,14 @@ int main(int argc, char* argv[]) {
   delete myBmp;
 
   //Ask for next commands
-  std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [operationArg]" << std::endl;
+  std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [cmdArg1;cmdArg2;...;cmdArgN]" << std::endl;
   std::cout << "Operations are:" << std::endl;
   std::cout << "0: print pixels" << std::endl;
   std::cout << "1: toGreyScale()" << std::endl;
   std::cout << "2: rotate()" << std::endl;
   std::cout << "3: flip('V')" << std::endl;
   std::cout << "4: flip('H')" << std::endl;
+  std::cout << "5: resizeArea(arg1, arg2, [arg3], [arg4])" << std::endl;
   std::cout << "bmpFile (QUIT to exit): ";
   std::cin >> bmpFilename;
   if (bmpFilename == "QUIT") {
@@ -162,13 +188,9 @@ int main(int argc, char* argv[]) {
   std::cin >> operationStr;
   command = std::stoi(operationStr);
   std::string operationArg;
-  std::cout << "OperationArg: ";
+  std::cout << "OperationArgs: ";
   std::cin >> operationArg;
-  try {
-  commandArg = std::stoi(operationArg);
-  } catch (std::invalid_argument& ex) {
-    commandArg = 0;
-  }
+  commandArgs = split(operationArg, ',');
 
   } while (true);
 

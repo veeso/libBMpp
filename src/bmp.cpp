@@ -53,6 +53,12 @@ Bmp::~Bmp() {
   if (header != nullptr) {
     delete header;
   }
+  //Delete pixels
+  for (auto& pixel : pixelArray) {
+    delete pixel;
+    pixel = nullptr;
+  }
+  pixelArray.clear();
 }
 
 /**
@@ -397,6 +403,96 @@ bool Bmp::flipHorizontal() {
 
 bool Bmp::flipVertical() {
   return this->flip(VERTICAL_FLIP);
+}
+
+/**
+ * @function resizeArea
+ * @description: resize area of the image from the bottom left; image can't become bigger than before
+ * @param size_t
+ * @param size_t
+ * @param size_t
+ * @param size_t
+ * @returns bool
+**/
+
+bool Bmp::resizeArea(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yOffset /* = 0 */) {
+
+  //Out image is bigger than current image
+  if (width + xOffset > header->width || height + yOffset > header->height) {
+    return false;
+  }
+  //Since pixels are stored bottom to top, we need to flip and then resize the matrix
+  if (!flipVertical()) {
+    return false;
+  }
+  //If offset is set cut starting from offset
+  if (xOffset > 0 || yOffset > 0) {
+    //Flip horizontally
+    if (!flipHorizontal()) {
+      return false;
+    }
+    //Resize passing offsets as width and height
+    if (!resizeArea(header->width - xOffset, header->height - yOffset)) {
+      return false;
+    }
+    //Reflip horizontally
+    if (!flipHorizontal()) {
+      return false;
+    }
+  }
+  //Convert image to matrix
+  std::vector<std::vector<Pixel*>> pixelMatrix;
+  //Store pixels in a matrix
+  size_t counter = 0;
+  for (size_t row = 0; row < header->height; row++) {
+    std::vector<Pixel*> rowVector;
+    for (size_t column = 0; column < header->width; column++) {
+      rowVector.push_back(pixelArray.at(counter));
+      counter++;
+    }
+    pixelMatrix.push_back(rowVector);
+  }
+  //Cut image
+  std::vector<std::vector<Pixel*>> resizedPixelMatrix = pixelMatrix;
+  //Resize height
+  resizedPixelMatrix.resize(height);
+  //Resize each row
+  for (size_t i = 0; i < height; i++) {
+    resizedPixelMatrix.at(i).resize(width);
+  }
+  //Delete out of bounds pixels
+  size_t count = 0;
+  //Delete all rows elements which have been cut off
+  for (size_t i = height; i < header->height; i++) {
+    for (size_t j = 0; j < header->width; j++) {
+      delete pixelMatrix.at(i).at(j);
+      count++;
+    }
+  }
+  //Delete cut columns
+  for (size_t i = 0; i < height; i++) {
+    for (size_t j = width; j < header->width; j++) {
+      delete pixelMatrix.at(i).at(j);
+      count++;
+    }
+  }
+
+  //Convert matrix to array
+  pixelArray.clear();
+  for (size_t row = 0; row < height; row++) {
+    for (size_t column = 0; column < width; column++) {
+      pixelArray.push_back(resizedPixelMatrix.at(row).at(column));
+    }
+  }
+
+  //Update BMP header
+  header->width = width;
+  header->height = height;
+  //Re-flip image
+  if (!flipVertical()) {
+    return false;
+  }
+  return true;
 }
 
 /* Specchiato 4 inverso effect
