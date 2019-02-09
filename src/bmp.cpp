@@ -256,15 +256,15 @@ uint8_t* Bmp::encodeBmp(size_t* dataSize) {
   bmpData[8] = 0;
   bmpData[9] = 0;
   //Data offset
-  bmpData[10] = 54;
-  bmpData[11] = 0;
-  bmpData[12] = 0;
-  bmpData[13] = 0;
+  bmpData[10] = header->dataOffset;
+  bmpData[11] = header->dataOffset >> 8;
+  bmpData[12] = header->dataOffset >> 16;
+  bmpData[13] = header->dataOffset >> 24;
   //DibSize
-  bmpData[14] = 0x28;
-  bmpData[15] = 0;
-  bmpData[16] = 0;
-  bmpData[17] = 0;
+  bmpData[14] = header->dibSize;
+  bmpData[15] = header->dibSize >> 8;
+  bmpData[16] = header->dibSize >> 16;
+  bmpData[17] = header->dibSize >> 24;
   //Width
   bmpData[18] = header->width;
   bmpData[19] = header->width >> 8;
