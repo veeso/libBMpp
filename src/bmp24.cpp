@@ -40,18 +40,30 @@ Bmp24::Bmp24() : Bmp() {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class constructor
+**/
+
+Bmp24::Bmp24(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+  //Set bits per pixel
+  header->bitsPerPixel = 24;
+  //FileSize must be set by child class
+  size_t nextMultipleOf4 = roundToMultiple(width * (header->bitsPerPixel / 8), 4);
+  size_t paddingSize = nextMultipleOf4 - (header->width * (header->bitsPerPixel / 8));
+  size_t rowSize = paddingSize + ((width * header->bitsPerPixel / 8));
+  size_t dataSize = rowSize * height;
+  header->fileSize = 54 + dataSize;
+  //DataSize must be set by child class
+  header->dataSize = dataSize;
+}
+
+/**
  * @function ~Bmp24
  * @description Bmp24 class destructor
 **/
 
 Bmp24::~Bmp24() {
-  //Delete pixels
-  for (auto& pixel : pixelArray) {
-    RGBPixel* rgbPixel = reinterpret_cast<RGBPixel*>(pixel);
-    delete rgbPixel;
-    pixel = nullptr;
-  }
-  pixelArray.clear();
+  
 }
 
 /**

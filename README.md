@@ -1,5 +1,6 @@
 # LibBMPP
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![HitCount](http://hits.dwyl.io/ChristianVisintin/libBMPP.svg)](http://hits.dwyl.io/ChristianVisintin/libBMPP) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/libBMPP/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
 Lib **Bitmap Plus Plus**  
@@ -76,6 +77,12 @@ Bmp();
 
 Bmp constructor initializes header to nullptr
 
+```cpp
+Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+```
+
+It is possible to create a new Bmp object passing a pixel array (of any kind), width and height of the image to create a new bitmap.
+
 #### Destructor
 
 ```cpp
@@ -130,10 +137,12 @@ bool flipHorizontal();
 
 Flip the image vertically
 
+#### resizeArea
+
+Resize the image area, an offset can be specified. The image can't become bigger than it was
 
 ```cpp
-#define HORIZONTAL_FLIP 'H'
-#define VERTICAL_FLIP 'V'
+bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
 ```
 
 #### getWidth

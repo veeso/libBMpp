@@ -54,6 +54,7 @@ class Bmp {
 
 public:
   Bmp();
+  Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
   ~Bmp();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
@@ -62,6 +63,7 @@ public:
   bool rotate(int degrees);
   bool flipVertical();
   bool flipHorizontal();
+  bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   //Getters
   size_t getWidth();
   size_t getHeight();
