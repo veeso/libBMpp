@@ -185,6 +185,14 @@ bool toGreyScale(int greyLevels = 255);
 
 Converts a color image to greyScale. Is it possible to specify the amount of grey levels (2 - 255).
 
+#### Bmp24::toSepiaTone
+
+```cpp
+bool toSepiaTone();
+```
+
+Converts image to sepia tone.
+
 #### Bmp24::getPixelAt
 
 ```cpp

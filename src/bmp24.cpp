@@ -28,6 +28,8 @@
 #include <string>
 #endif
 
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+
 using namespace bmp;
 
 /**
@@ -194,6 +196,24 @@ bool Bmp24::toGreyScale(int greyLevels /*= 255*/) {
       greyValue = greyValue - (greyValue % appliedLevel);
     }
     rgbPixel->setPixel(greyValue, greyValue, greyValue);
+  }
+  return true;
+}
+
+/**
+ * @function toSepiaTone
+ * @description: converts image to sepia tone
+ * @returns bool
+**/
+
+bool Bmp24::toSepiaTone() {
+  //Convert each pixel to sepia
+  for (auto& pixel : pixelArray) {
+    RGBPixel* rgbPixel = reinterpret_cast<RGBPixel*>(pixel);
+    uint8_t red = MIN((rgbPixel->getRed() * 0.393) + (rgbPixel->getGreen() * 0.769) + (rgbPixel->getBlue() * 0.189), 255);
+    uint8_t green = MIN((rgbPixel->getRed() * 0.349) + (rgbPixel->getGreen() * 0.686) + (rgbPixel->getBlue() * 0.168), 255);
+    uint8_t blue = MIN((rgbPixel->getRed() * 0.272) + (rgbPixel->getGreen() * 0.534) + (rgbPixel->getBlue() * 0.131), 255);
+    rgbPixel->setPixel(red, green, blue);
   }
   return true;
 }

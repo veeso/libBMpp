@@ -45,11 +45,12 @@ int main(int argc, char* argv[]) {
     std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [cmdArg1,cmdArg2,...,cmdArgN]" << std::endl;
     std::cout << "Operations are:" << std::endl;
     std::cout << "0: print pixels" << std::endl;
-    std::cout << "1: toGreyScale()" << std::endl;
-    std::cout << "2: rotate()" << std::endl;
-    std::cout << "3: flip('V')" << std::endl;
-    std::cout << "4: flip('H')" << std::endl;
-    std::cout << "5: resizeArea(arg1, arg2)" << std::endl;
+    std::cout << "1: rotate()" << std::endl;
+    std::cout << "2: flip('V')" << std::endl;
+    std::cout << "3: flip('H')" << std::endl;
+    std::cout << "4: resizeArea(arg1, arg2)" << std::endl;
+    std::cout << "5: toGreyScale(arg1)" << std::endl;
+    std::cout << "6: toSepiaTone()" << std::endl;
     return 1;
   }
 
@@ -109,25 +110,19 @@ int main(int argc, char* argv[]) {
   }
   case 1: {
     int commandArg = std::stoi(commandArgs.at(0));
-    std::cout << "Applying: toGreyScale(" << commandArg << ")\n";
-    myBmp->toGreyScale(commandArg);
-    break;
-  }
-  case 2: {
-    int commandArg = std::stoi(commandArgs.at(0));
     std::cout << "Applying: rotate(" << commandArg << ")\n";
     myBmp->rotate(commandArg);
     break;
   }
-  case 3:
+  case 2:
     std::cout << "Applying: flip('V')\n";
     myBmp->flipVertical();
     break;
-  case 4:
+  case 3:
     std::cout << "Applying: flip('H')\n";
     myBmp->flipHorizontal();
     break;
-  case 5: {
+  case 4: {
     size_t width = std::stoi(commandArgs.at(0));
     size_t height = std::stoi(commandArgs.at(1));
     size_t xOffset = 0;
@@ -138,6 +133,17 @@ int main(int argc, char* argv[]) {
     }
     std::cout << "Applying: resizeArea(" << width << "," << height << "," << xOffset << "," << yOffset << ");\n";
     myBmp->resizeArea(width, height, xOffset, yOffset);
+    break;
+  }
+  case 5: {
+    int commandArg = std::stoi(commandArgs.at(0));
+    std::cout << "Applying: toGreyScale(" << commandArg << ")\n";
+    myBmp->toGreyScale(commandArg);
+    break;
+  }
+  case 6: {
+    std::cout << "Applying: toSepiaTone()\n";
+    myBmp->toSepiaTone();
     break;
   }
   default:
@@ -171,11 +177,12 @@ int main(int argc, char* argv[]) {
   std::cout << "Usage: bmpTest <bmpfile> <outBmpFile> [operation] [cmdArg1;cmdArg2;...;cmdArgN]" << std::endl;
   std::cout << "Operations are:" << std::endl;
   std::cout << "0: print pixels" << std::endl;
-  std::cout << "1: toGreyScale()" << std::endl;
-  std::cout << "2: rotate()" << std::endl;
-  std::cout << "3: flip('V')" << std::endl;
-  std::cout << "4: flip('H')" << std::endl;
-  std::cout << "5: resizeArea(arg1, arg2, [arg3], [arg4])" << std::endl;
+  std::cout << "1: rotate()" << std::endl;
+  std::cout << "2: flip('V')" << std::endl;
+  std::cout << "3: flip('H')" << std::endl;
+  std::cout << "4: resizeArea(arg1, arg2)" << std::endl;
+  std::cout << "5: toGreyScale(arg1)" << std::endl;
+  std::cout << "6: toSepiaTone()" << std::endl;
   std::cout << "bmpFile (QUIT to exit): ";
   std::cin >> bmpFilename;
   if (bmpFilename == "QUIT") {
