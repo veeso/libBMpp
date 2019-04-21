@@ -1,5 +1,5 @@
 /**
- *   libBMP24 - bwpixel.hpp
+ *   libBMPP - bwpixel.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

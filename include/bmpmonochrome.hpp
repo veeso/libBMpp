@@ -1,5 +1,5 @@
 /**
- *   libBMP24 - bmpmonochrome.hpp
+ *   libBMPP - bmpmonochrome.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

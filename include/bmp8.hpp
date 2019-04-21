@@ -1,5 +1,5 @@
 /**
- *   libBMP24 - bmp8.hpp
+ *   libBMPP - bmp8.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -20,6 +20,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
 **/
+
+#ifndef BMP8_HPP
+#define BMP8_HPP
 
 #include <pixels/bytepixel.hpp>
 #include <bmp.hpp>
@@ -44,3 +47,5 @@ public:
 };
 
 } // namespace bmp
+
+#endif

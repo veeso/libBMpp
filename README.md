@@ -225,6 +225,66 @@ bmp::BytePixel* getPixelAt(int index);
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
 
+### Bmp32
+
+Bmp32 is a class which extends Bmp class and describes a 32 bits for pixel Bitmap. (RGBa)
+
+In addition to Bmp methods, it provides the following methods:
+
+#### Bmp32::setPixelAt
+
+```cpp
+bool setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+```
+
+set the RGBa value of the pixel in index position.  
+
+Returns false if the requested pixel, does not exist.
+
+#### Bmp32::toGreyScale
+
+```cpp
+bool toGreyScale(int greyLevels = 255);
+```
+
+Converts a color image to greyScale. Is it possible to specify the amount of grey levels (2 - 255).
+
+#### Bmp32::toSepiaTone
+
+```cpp
+bool toSepiaTone();
+```
+
+Converts image to sepia tone.
+
+#### Bmp32::getPixelAt
+
+```cpp
+bmp::RGBAPixel* getPixelAt(int index);
+```
+
+Returns the pointer to the RGBAPixel in provided position. If the requested pixel does not exist, returns nullptr
+
+### Bmpmonochrome
+
+Bmpmonochome is a class which extends Bmp class and describes a 1 bits for pixel Bitmap. (BW)
+
+In addition to Bmp methods, it provides the following methods:
+
+#### Bmpmonochrome::setPixelAt
+
+```cpp
+bool setPixelAt(int index, uint8_t value);
+```
+
+#### Bmpmonochrome::getPixelAt
+
+```cpp
+bmp::BWPixel* getPixelAt(int index);
+```
+
+Returns the pointer to the BWPixel in provided position. If the requested pixel does not exist, returns nullptr
+
 ---
 
 ## Changelog

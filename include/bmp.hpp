@@ -1,5 +1,5 @@
 /**
- *   libBMP24 - bmp.hpp
+ *   libBMPP - bmp.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

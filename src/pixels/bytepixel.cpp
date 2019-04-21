@@ -1,5 +1,5 @@
 /**
- *   libBMP24 - BytePixel.cpp
+ *   libBMPP - BytePixel.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
