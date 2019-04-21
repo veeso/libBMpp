@@ -161,6 +161,54 @@ size_t getHeight();
 
 Returns the image height in pixels
 
+### Bmp8
+
+Bmp8 is a class which extends Bmp class and describes a 8 bits for pixel Bitmap.
+
+In addition to Bmp methods, it provides the following methods:
+
+#### Bmp8::setPixelAt
+
+```cpp
+bool setPixelAt(int index, uint8_t value);
+```
+
+set the 255 value of the pixel in index position.  
+
+Returns false if the requested pixel, does not exist.
+
+#### Bmp8::getPixelAt
+
+```cpp
+bmp::BytePixel* getPixelAt(int index);
+```
+
+Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
+
+### Bmp16
+
+Bmp8 is a class which extends Bmp class and describes a 16 bits for pixel Bitmap.
+
+In addition to Bmp methods, it provides the following methods:
+
+#### Bmp16::setPixelAt
+
+```cpp
+bool setPixelAt(int index, uint16_t value);
+```
+
+set the 255 value of the pixel in index position.  
+
+Returns false if the requested pixel, does not exist.
+
+#### Bmp16::getPixelAt
+
+```cpp
+bmp::WordPixel* getPixelAt(int index);
+```
+
+Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
+
 ### Bmp24
 
 Bmp24 is a class which extends Bmp class and describes a 24 bits for pixel Bitmap.
@@ -200,30 +248,6 @@ bmp::RGBPixel* getPixelAt(int index);
 ```
 
 Returns the pointer to the RGBPixel in provided position. If the requested pixel does not exist, returns nullptr
-
-### Bmp8
-
-Bmp8 is a class which extends Bmp class and describes a 8 bits for pixel Bitmap.
-
-In addition to Bmp methods, it provides the following methods:
-
-#### Bmp8::setPixelAt
-
-```cpp
-bool setPixelAt(int index, uint8_t value);
-```
-
-set the 255 value of the pixel in index position.  
-
-Returns false if the requested pixel, does not exist.
-
-#### Bmp8::getPixelAt
-
-```cpp
-bmp::BytePixel* getPixelAt(int index);
-```
-
-Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
 
 ### Bmp32
 

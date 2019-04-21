@@ -1,5 +1,5 @@
 /**
- *   libBMPP - BytePixel.cpp
+ *   libBMPP - wordpixel.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -21,36 +21,25 @@
  * SOFTWARE.
 **/
 
-#include <pixels/bytepixel.hpp>
+#ifndef WORDPIXEL_HPP
+#define WORDPIXEL_HPP
 
-using namespace bmp;
+#include <pixels/pixel.hpp>
 
-/**
- * @function BytePixel
- * @description: BytePixel class constructor
- * @param uint8_t
-**/
+namespace bmp {
 
-BytePixel::BytePixel(uint8_t value) {
-  this->value = value > 0 ? 1 : 0;
-}
+class WordPixel : public Pixel {
 
-/**
- * @function setPixel
- * @description: Set pixel RGB value
- * @param uint8_t
-**/
+public:
+  WordPixel(uint16_t value);
+  void setPixel(uint16_t value);
+  uint16_t getValue();
 
-void BytePixel::setPixel(uint8_t value) {
-  this->value = value > 0 ? 1 : 0;
-}
+private:
+  uint16_t value;
 
-/**
- * @function getValue
- * @description returns color (1:0) value
- * @returns uint8_t
-**/
+};
 
-uint8_t BytePixel::getValue() {
-  return value;
-}
+} // namespace bmp
+
+#endif

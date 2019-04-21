@@ -1,5 +1,5 @@
 /**
- *   libBMPP - BytePixel.cpp
+ *   libBMPP - bmp16.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -21,36 +21,31 @@
  * SOFTWARE.
 **/
 
-#include <pixels/bytepixel.hpp>
+#ifndef BMP16_HPP
+#define BMP16_HPP
 
-using namespace bmp;
+#include <pixels/wordpixel.hpp>
+#include <bmp.hpp>
 
-/**
- * @function BytePixel
- * @description: BytePixel class constructor
- * @param uint8_t
-**/
+namespace bmp
+{
 
-BytePixel::BytePixel(uint8_t value) {
-  this->value = value > 0 ? 1 : 0;
-}
+class Bmp16 : public Bmp {
 
-/**
- * @function setPixel
- * @description: Set pixel RGB value
- * @param uint8_t
-**/
+public:
+  Bmp16();
+  Bmp16(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  ~Bmp16();
+  //En/Decoding
+  bool decodeBmp(uint8_t* bmpData, size_t dataSize);
+  uint8_t* encodeBmp(size_t* dataSize);
+  //Image operations
+  bool setPixelAt(int index, uint16_t value);
+  //Getters
+  bmp::WordPixel* getPixelAt(int index);
 
-void BytePixel::setPixel(uint8_t value) {
-  this->value = value > 0 ? 1 : 0;
-}
+};
 
-/**
- * @function getValue
- * @description returns color (1:0) value
- * @returns uint8_t
-**/
+} // namespace bmp
 
-uint8_t BytePixel::getValue() {
-  return value;
-}
+#endif
