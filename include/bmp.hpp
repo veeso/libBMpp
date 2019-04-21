@@ -67,6 +67,7 @@ public:
   //Getters
   size_t getWidth();
   size_t getHeight();
+  uint16_t getBitsPerPixel();
 
 protected:
   bool flip(char flipType);

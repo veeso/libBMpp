@@ -565,6 +565,16 @@ size_t Bmp::getHeight() {
 }
 
 /**
+ * @function getBitsPerPixel
+ * @description returns amount of bits per pixel in image
+ * @returns uint16_t
+**/
+
+uint16_t Bmp::getBitsPerPixel() {
+  return header->bitsPerPixel;
+}
+
+/**
  * @function flip
  * @description: flip image horizontally or vertically based on argument
  * @param char

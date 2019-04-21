@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bwpixel.hpp
+ *   libBMPP - bmpparser.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -21,25 +21,24 @@
  * SOFTWARE.
 **/
 
-#ifndef BYTEPIXEL_HPP
-#define BYTEPIXEL_HPP
+#ifndef BMPPARSER_HPP
+#define BMPPARSER_HPP
 
-#include <pixels/pixel.hpp>
+#include <bmp.hpp>
+
+#include <functional>
 
 namespace bmp {
 
-class BytePixel : public Pixel {
+class BmpParser {
 
 public:
-  BytePixel(uint8_t value);
-  void setPixel(uint8_t value);
-  uint8_t getValue();
-
-private:
-  uint8_t value;
+  BmpParser();
+  //Decoding
+  Bmp* getBmp(uint8_t* bmpData, size_t dataSize, size_t& bitsPerPixel);
 
 };
 
-} // namespace bmp
+}
 
 #endif

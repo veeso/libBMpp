@@ -309,6 +309,16 @@ bmp::BWPixel* getPixelAt(int index);
 
 Returns the pointer to the BWPixel in provided position. If the requested pixel does not exist, returns nullptr
 
+### BmpParser
+
+Parses a bmp and returns a pointer to a Bmp type (e.g. bmp8, bmp24 ...).
+
+#### BmpParser::getBmp
+
+```cpp
+bmp::Bmp* getBmp(uint8_t* data, size_t dataSize, size_t& bitsPerPixel);
+```
+
 ---
 
 ## Changelog
