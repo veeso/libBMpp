@@ -63,7 +63,7 @@ public:
   bool rotate(int degrees);
   bool flipVertical();
   bool flipHorizontal();
-  bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
+  bool scale(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   //Getters
   size_t getWidth();
   size_t getHeight();
