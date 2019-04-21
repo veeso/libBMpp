@@ -137,6 +137,49 @@ uint8_t* Bmp16::encodeBmp(size_t* dataSize) {
 }
 
 /**
+ * @function resizeArea
+ * @description resize area (does not scale image), both enlarging or scaling it
+ * @param size_t width
+ * @param size_t height
+ * @param size_t xOffset (optional)
+ * @param size_t yOffset (optional)
+ * @returns bool
+**/
+
+bool Bmp16::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, size_t yOffset /* = 0*/) {
+
+  while (header->width != width || header->height != height) {
+    size_t currWidth = header->width;
+    size_t currHeight = header->height;
+    //Resize image in order to match user requests; start with enlarging if necessary
+    if (width > currWidth || height > currHeight) {
+      //Pass higher size or current one to enlarge
+      size_t enlargedWidth = (width > currWidth) ? width : currWidth;
+      size_t enlargedHeight = (height > currHeight) ? height : currHeight;
+      //Initialize Pixel lambda
+      std::function<void(Pixel*)> initializePixel = [](Pixel* px) { px = new WordPixel(65535); };
+      if (!enlargeArea(enlargedWidth, enlargedHeight, initializePixel, xOffset, yOffset)) {
+        return false;
+      }
+      continue;
+    }
+    //Also, scale area if necessary
+    if (width < currWidth || height << currHeight) {
+      //Pass lower size or current one to scale
+      size_t scaledWidth = (width < currWidth) ? width : currWidth;
+      size_t scaledHeight = (height < currHeight) ? height : currHeight;
+      //Scale image
+      if (!scaleArea(scaledWidth, scaledHeight, xOffset, yOffset)) {
+        return false;
+      }
+      continue;
+    }
+  }
+  //Return OK
+  return true;
+}
+
+/**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
  * @param int

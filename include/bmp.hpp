@@ -28,6 +28,7 @@
 #include <params/bmpparams.hpp>
 
 #include <cstddef>
+#include <functional>
 #include <vector>
 
 namespace bmp {
@@ -64,8 +65,7 @@ public:
   bool rotate(int degrees);
   bool flipVertical();
   bool flipHorizontal();
-  bool scaleArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
-  bool enlargeArea(size_t width, size_t height, EnlargementType opt);
+  bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   //Getters
   size_t getWidth();
   size_t getHeight();
@@ -73,6 +73,8 @@ public:
 
 protected:
   bool flip(FlipType flipType);
+  bool scaleArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
+  bool enlargeArea(size_t width, size_t height, std::function<void (Pixel*)> initializePixel, size_t xOffset = 0, size_t yOffset = 0);
   int roundToMultiple(int toRound, int multiple);
   bmp::Header* header;
   uint8_t* dibData;

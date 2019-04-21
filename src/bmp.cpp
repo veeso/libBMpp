@@ -437,102 +437,46 @@ bool Bmp::flipVertical() {
 }
 
 /**
- * @function scaleArea
- * @description: scaleArea down of the image from the bottom left; image can't become bigger than before
- * @param size_t
- * @param size_t
- * @param size_t
- * @param size_t
+ * @function resizeArea
+ * @description resize area (does not scale image), both enlarging or scaling it
+ * @param size_t width
+ * @param size_t height
+ * @param size_t xOffset (optional)
+ * @param size_t yOffset (optional)
  * @returns bool
 **/
 
-bool Bmp::scaleArea(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yOffset /* = 0 */) {
+bool Bmp::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, size_t yOffset /* = 0*/) {
 
-  //Out image is bigger than current image (@! enlarge)
-  if (width + xOffset > header->width || height + yOffset > header->height) {
-    return false;
-  } else {
-    //Since pixels are stored bottom to top, we need to flip and then resize the matrix
-    if (!flipVertical()) {
-      return false;
-    }
-    //If offset is set cut starting from offset
-    if (xOffset > 0 || yOffset > 0) {
-      //Flip horizontally
-      if (!flipHorizontal()) {
+  while (header->width != width || header->height != height) {
+    size_t currWidth = header->width;
+    size_t currHeight = header->height;
+    //Resize image in order to match user requests; start with enlarging if necessary
+    if (width > currWidth || height > currHeight) {
+      //Pass higher size or current one to enlarge
+      size_t enlargedWidth = (width > currWidth) ? width : currWidth;
+      size_t enlargedHeight = (height > currHeight) ? height : currHeight;
+      //Initialize Pixel lambda
+      std::function<void(Pixel*)> initializePixel = [](Pixel* px) { px = new Pixel(); };
+      if (!enlargeArea(enlargedWidth, enlargedHeight, initializePixel, xOffset, yOffset)) {
         return false;
       }
-      //Resize passing offsets as width and height
-      if (!scaleArea(header->width - xOffset, header->height - yOffset)) {
+      continue;
+    }
+    //Also, scale area if necessary
+    if (width < currWidth || height << currHeight) {
+      //Pass lower size or current one to scale
+      size_t scaledWidth = (width < currWidth) ? width : currWidth;
+      size_t scaledHeight = (height < currHeight) ? height : currHeight;
+      //Scale image
+      if (!scaleArea(scaledWidth, scaledHeight, xOffset, yOffset)) {
         return false;
       }
-      //Reflip horizontally
-      if (!flipHorizontal()) {
-        return false;
-      }
+      continue;
     }
-    //Convert image to matrix
-    std::vector<std::vector<Pixel*>> pixelMatrix;
-    //Store pixels in a matrix
-    size_t counter = 0;
-    for (size_t row = 0; row < header->height; row++) {
-      std::vector<Pixel*> rowVector;
-      for (size_t column = 0; column < header->width; column++) {
-        rowVector.push_back(pixelArray.at(counter));
-        counter++;
-      }
-      pixelMatrix.push_back(rowVector);
-    }
-    //Cut image
-    std::vector<std::vector<Pixel*>> resizedPixelMatrix = pixelMatrix;
-    //Resize height
-    resizedPixelMatrix.resize(height);
-    //Resize each row
-    for (size_t i = 0; i < height; i++) {
-      resizedPixelMatrix.at(i).resize(width);
-    }
-    //Delete out of bounds pixels
-    size_t count = 0;
-    //Delete all rows elements which have been cut off
-    for (size_t i = height; i < header->height; i++) {
-      for (size_t j = 0; j < header->width; j++) {
-        delete pixelMatrix.at(i).at(j);
-        count++;
-      }
-    }
-    //Delete cut columns
-    for (size_t i = 0; i < height; i++) {
-      for (size_t j = width; j < header->width; j++) {
-        delete pixelMatrix.at(i).at(j);
-        count++;
-      }
-    }
-
-    //Convert matrix to array
-    pixelArray.clear();
-    for (size_t row = 0; row < height; row++) {
-      for (size_t column = 0; column < width; column++) {
-        pixelArray.push_back(resizedPixelMatrix.at(row).at(column));
-      }
-    }
-
-    //Update BMP header
-    header->width = width;
-    header->height = height;
-    //Re-flip image
-    if (!flipVertical()) {
-      return false;
-    }
-    return true;
   }
-}
-
-/**
- * @function enlarge
- * @description enlarge image following the enlargement type passed (this function just adds pixels)
-
-bool Bmp::enlargeAreasize_t width, size_t height, EnlargementType opt) {
-
+  //Return OK
+  return true;
 }
 
 /**
@@ -641,6 +585,176 @@ bool Bmp::flip(FlipType flipType) {
       }
       //Add to counter missing part to finish line
       counter += header->width / 2;
+    }
+  }
+  return true;
+}
+
+/**
+ * @function scaleArea
+ * @description: scaleArea down of the image from the bottom left; image can't become bigger than before
+ * @param size_t
+ * @param size_t
+ * @param size_t
+ * @param size_t
+ * @returns bool
+**/
+
+bool Bmp::scaleArea(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yOffset /* = 0 */) {
+
+  //Out image is bigger than current image (@! enlarge)
+  if (width + xOffset > header->width || height + yOffset > header->height) {
+    return false;
+  } else {
+    //Since pixels are stored bottom to top, we need to flip and then resize the matrix
+    if (!flipVertical()) {
+      return false;
+    }
+    //If offset is set cut starting from offset
+    if (xOffset > 0 || yOffset > 0) {
+      //Flip horizontally
+      if (!flipHorizontal()) {
+        return false;
+      }
+      //Resize passing offsets as width and height
+      if (!scaleArea(header->width - xOffset, header->height - yOffset)) {
+        return false;
+      }
+      //Reflip horizontally
+      if (!flipHorizontal()) {
+        return false;
+      }
+    }
+    //Convert image to matrix
+    std::vector<std::vector<Pixel*>> pixelMatrix;
+    //Store pixels in a matrix
+    size_t counter = 0;
+    for (size_t row = 0; row < header->height; row++) {
+      std::vector<Pixel*> rowVector;
+      for (size_t column = 0; column < header->width; column++) {
+        rowVector.push_back(pixelArray.at(counter));
+        counter++;
+      }
+      pixelMatrix.push_back(rowVector);
+    }
+    //Cut image
+    std::vector<std::vector<Pixel*>> resizedPixelMatrix = pixelMatrix;
+    //Resize height
+    resizedPixelMatrix.resize(height);
+    //Resize each row
+    for (size_t i = 0; i < height; i++) {
+      resizedPixelMatrix.at(i).resize(width);
+    }
+    //Delete out of bounds pixels
+    size_t count = 0;
+    //Delete all rows elements which have been cut off
+    for (size_t i = height; i < header->height; i++) {
+      for (size_t j = 0; j < header->width; j++) {
+        delete pixelMatrix.at(i).at(j);
+        count++;
+      }
+    }
+    //Delete cut columns
+    for (size_t i = 0; i < height; i++) {
+      for (size_t j = width; j < header->width; j++) {
+        delete pixelMatrix.at(i).at(j);
+        count++;
+      }
+    }
+
+    //Convert matrix to array
+    pixelArray.clear();
+    for (size_t row = 0; row < height; row++) {
+      for (size_t column = 0; column < width; column++) {
+        pixelArray.push_back(resizedPixelMatrix.at(row).at(column));
+      }
+    }
+
+    //Update BMP header
+    header->width = width;
+    header->height = height;
+    //Re-flip image
+    if (!flipVertical()) {
+      return false;
+    }
+    return true;
+  }
+}
+
+/**
+ * @function enlarge
+ * @description enlarge image following the enlargement type passed (this function just adds pixels). A transformation function can be called to pixels which are created
+ * @param size_t
+ * @param size_t
+ * @param std::function<void(Pixel*)> functions which initializes and instances a pixel
+ * @param size_t
+ * @param size_t
+ * @returns bool
+**/
+
+bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> initializePixel, size_t xOffset /* = 0*/, size_t yOffset /* = 0*/) {
+
+  //Check if image will be actually be enlarged
+  if (width <= header->width && height <= header->height) {
+    return false;
+  }
+  //Store previous size
+  size_t prevWidth = header->width;
+  size_t prevHeight = header->height;
+  //TODO: add offset
+  //Convert image to matrix
+  std::vector<std::vector<Pixel*>> pixelMatrix;
+  //Store pixels in a matrix
+  size_t counter = 0;
+  for (size_t row = 0; row < header->height; row++) {
+    std::vector<Pixel*> rowVector;
+    for (size_t column = 0; column < header->width; column++) {
+      rowVector.push_back(pixelArray.at(counter));
+      counter++;
+    }
+    pixelMatrix.push_back(rowVector);
+  }
+  //Start with adding pixels on X on currently existing rows
+  for (size_t row = 0; row < prevHeight; row++) {
+    std::vector<Pixel*> rowVector = pixelMatrix.at(row);
+    for (size_t column = prevWidth; column < width; column++) {
+      //Add new pixel and transform it
+      Pixel* pixelToAdd = nullptr;
+      //Transform pixel
+      initializePixel(pixelToAdd);
+      if (pixelToAdd == nullptr) {
+        pixelToAdd = new Pixel();
+      }
+      //Add pixel to row vector
+      rowVector.push_back(pixelToAdd);
+      pixelMatrix.at(row) = rowVector;
+    }
+  }
+  //Now add pixels on Y with width = newWidth
+  for (size_t row = prevHeight; row < height; row++) {
+    std::vector<Pixel*> rowVector;
+    for (size_t column = 0; column < width; column++) {
+      //Add new pixel and transform it
+      Pixel* pixelToAdd = nullptr;
+      //Transform pixel
+      initializePixel(pixelToAdd);
+      if (pixelToAdd == nullptr) {
+        pixelToAdd = new Pixel();
+      }
+      //Add pixel to row vector
+      rowVector.push_back(pixelToAdd);
+    }
+    //Add rowVector to pixel matrix
+    pixelMatrix.push_back(rowVector);
+  }
+  //Update header
+  header->width = width;
+  header->height = height;
+  //Convert matrix into array
+  pixelArray.clear();
+  for (size_t row = 0; row < height; row++) {
+    for (size_t column = 0; column < width; column++) {
+      pixelArray.push_back(pixelMatrix.at(row).at(column));
     }
   }
   return true;
