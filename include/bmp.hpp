@@ -25,6 +25,7 @@
 #define BMP_HPP
 
 #include <pixels/pixel.hpp>
+#include <params/bmpparams.hpp>
 
 #include <cstddef>
 #include <vector>
@@ -64,13 +65,14 @@ public:
   bool flipVertical();
   bool flipHorizontal();
   bool scale(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
+  bool enlarge(size_t width, size_t height);
   //Getters
   size_t getWidth();
   size_t getHeight();
   uint16_t getBitsPerPixel();
 
 protected:
-  bool flip(char flipType);
+  bool flip(FlipType flipType);
   int roundToMultiple(int toRound, int multiple);
   bmp::Header* header;
   uint8_t* dibData;

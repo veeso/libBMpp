@@ -423,7 +423,7 @@ bool Bmp::rotate(int degrees) {
 **/
 
 bool Bmp::flipHorizontal() {
-  return this->flip(HORIZONTAL_FLIP);
+  return this->flip(FlipType::VERTICAL);
 }
 
 /**
@@ -433,7 +433,7 @@ bool Bmp::flipHorizontal() {
 **/
 
 bool Bmp::flipVertical() {
-  return this->flip(VERTICAL_FLIP);
+  return this->flip(FlipType::VERTICAL);
 }
 
 /**
@@ -578,14 +578,14 @@ uint16_t Bmp::getBitsPerPixel() {
 /**
  * @function flip
  * @description: flip image horizontally or vertically based on argument
- * @param char
+ * @param FlipType
  * @returns bool
 **/
 
-bool Bmp::flip(char flipType) {
+bool Bmp::flip(FlipType flipType) {
   
   //Invalid flip operation
-  if (flipType != HORIZONTAL_FLIP && flipType != VERTICAL_FLIP) {
+  if (flipType >= FlipType::OUT_OF_RANGE) {
     return false;
   }
   //Check if header exists
@@ -594,7 +594,7 @@ bool Bmp::flip(char flipType) {
   }
 
   //Apply vertical flip
-  if (flipType == VERTICAL_FLIP) {
+  if (flipType == FlipType::VERTICAL) {
     //Apply horizontal flip
     std::vector<std::vector<Pixel*>> pixelMatrix;
     int counter = -1;
@@ -616,7 +616,7 @@ bool Bmp::flip(char flipType) {
         pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
       }
     }
-  } else { 
+  } else if (flipType == FlipType::HORIZONTAL) { 
     //Apply horizontal flip
     std::vector<std::vector<Pixel*>> pixelMatrix;
     int counter = -1;
