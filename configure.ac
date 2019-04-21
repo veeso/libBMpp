@@ -30,6 +30,6 @@ LT_INIT
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile include/Makefile src/Makefile test/Makefile test/bmp8/Makefile test/bmp24/Makefile test/bmp32/Makefile])
+AC_CONFIG_FILES([Makefile include/Makefile src/Makefile test/Makefile test/bmp8/Makefile test/bmp24/Makefile test/bmp32/Makefile test/bmpmono/Makefile])
 
 AC_OUTPUT
