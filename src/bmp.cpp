@@ -437,8 +437,8 @@ bool Bmp::flipVertical() {
 }
 
 /**
- * @function scale
- * @description: scale down of the image from the bottom left; image can't become bigger than before
+ * @function scaleArea
+ * @description: scaleArea down of the image from the bottom left; image can't become bigger than before
  * @param size_t
  * @param size_t
  * @param size_t
@@ -446,7 +446,7 @@ bool Bmp::flipVertical() {
  * @returns bool
 **/
 
-bool Bmp::scale(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yOffset /* = 0 */) {
+bool Bmp::scaleArea(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yOffset /* = 0 */) {
 
   //Out image is bigger than current image (@! enlarge)
   if (width + xOffset > header->width || height + yOffset > header->height) {
@@ -463,7 +463,7 @@ bool Bmp::scale(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yO
         return false;
       }
       //Resize passing offsets as width and height
-      if (!scale(header->width - xOffset, header->height - yOffset)) {
+      if (!scaleArea(header->width - xOffset, header->height - yOffset)) {
         return false;
       }
       //Reflip horizontally
@@ -527,15 +527,13 @@ bool Bmp::scale(size_t width, size_t height, size_t xOffset /* = 0 */, size_t yO
   }
 }
 
-/* Specchiato 4 inverso effect
-    for (size_t row = 0; row < header->height; row++) {
-      for (size_t column = 0; column < header->width / 2; column++) {
-        std::swap(pixelMatrix.at(row).at(column), pixelMatrix.at(row).at(header->width - 1 - column));
-        pixelArray.at(++counter) = pixelMatrix.at(row).at(column);
-        pixelArray.at(pixelArray.size() - 1 - counter) = pixelMatrix.at(row).at(header->width - 1 - column);
-      }
-    }
-*/
+/**
+ * @function enlarge
+ * @description enlarge image following the enlargement type passed (this function just adds pixels)
+
+bool Bmp::enlargeAreasize_t width, size_t height, EnlargementType opt) {
+
+}
 
 /**
  * @function getWidth

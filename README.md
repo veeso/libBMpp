@@ -137,12 +137,12 @@ bool flipHorizontal();
 
 Flip the image vertically
 
-#### scale
+#### scaleArea
 
 Resize the image area, an offset can be specified. The image can't become bigger than it was
 
 ```cpp
-bool scale(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
+bool scaleArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
 ```
 
 #### getWidth

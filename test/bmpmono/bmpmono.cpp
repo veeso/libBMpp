@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     std::cout << "2: rotate()" << std::endl;
     std::cout << "3: flip('V')" << std::endl;
     std::cout << "4: flip('H')" << std::endl;
-    std::cout << "5: scale(arg1, arg2)" << std::endl;
+    std::cout << "5: scaleArea(arg1, arg2)" << std::endl;
     return 1;
   }
 
@@ -130,8 +130,8 @@ int main(int argc, char* argv[]) {
       xOffset = std::stoi(commandArgs.at(2));
       yOffset = std::stoi(commandArgs.at(3));
     }
-    std::cout << "Applying: scale(" << width << "," << height << "," << xOffset << "," << yOffset << ");\n";
-    myBmp->scale(width, height, xOffset, yOffset);
+    std::cout << "Applying: scaleArea(" << width << "," << height << "," << xOffset << "," << yOffset << ");\n";
+    myBmp->scaleArea(width, height, xOffset, yOffset);
     break;
   }
   default:
@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
   std::cout << "1: rotate()" << std::endl;
   std::cout << "2: flip('V')" << std::endl;
   std::cout << "3: flip('H')" << std::endl;
-  std::cout << "4: scale(arg1, arg2, [arg3], [arg4])" << std::endl;
+  std::cout << "4: scaleArea(arg1, arg2, [arg3], [arg4])" << std::endl;
   std::cout << "bmpFile (QUIT to exit): ";
   std::cin >> bmpFilename;
   if (bmpFilename == "QUIT") {

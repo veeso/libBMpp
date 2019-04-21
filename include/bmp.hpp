@@ -64,8 +64,8 @@ public:
   bool rotate(int degrees);
   bool flipVertical();
   bool flipHorizontal();
-  bool scale(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
-  bool enlarge(size_t width, size_t height);
+  bool scaleArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
+  bool enlargeArea(size_t width, size_t height, EnlargementType opt);
   //Getters
   size_t getWidth();
   size_t getHeight();

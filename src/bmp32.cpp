@@ -176,7 +176,7 @@ bool Bmp32::setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue, uint
 
 /**
  * @function toGreyScale
- * @description: convert bitmap to greyscale; if greyLevels is set, provided amount of greys will be used
+ * @description: convert bitmap to greyscaleArea; if greyLevels is set, provided amount of greys will be used
  * @param int
  * @returns bool
 **/
