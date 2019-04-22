@@ -241,7 +241,7 @@ bool Bmp32::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, siz
       size_t enlargedWidth = (width > currWidth) ? width : currWidth;
       size_t enlargedHeight = (height > currHeight) ? height : currHeight;
       //Initialize Pixel lambda
-      std::function<void(Pixel*)> initializePixel = [](Pixel* px) { px = new RGBAPixel(255, 255, 255, 0); };
+      std::function<void(Pixel*&)> initializePixel = [](Pixel*& px) { px = new RGBAPixel(255, 255, 255, 0); };
       if (!enlargeArea(enlargedWidth, enlargedHeight, initializePixel, xOffset, yOffset)) {
         return false;
       }

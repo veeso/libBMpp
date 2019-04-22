@@ -176,7 +176,7 @@ bool Bmpmonochrome::resizeArea(size_t width, size_t height, size_t xOffset /* = 
       size_t enlargedWidth = (width > currWidth) ? width : currWidth;
       size_t enlargedHeight = (height > currHeight) ? height : currHeight;
       //Initialize Pixel lambda
-      std::function<void(Pixel*)> initializePixel = [](Pixel* px) { px = new BWPixel(1); };
+      std::function<void(Pixel*&)> initializePixel = [](Pixel*& px) { px = new BWPixel(1); };
       if (!enlargeArea(enlargedWidth, enlargedHeight, initializePixel, xOffset, yOffset)) {
         return false;
       }

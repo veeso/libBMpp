@@ -692,7 +692,7 @@ bool Bmp::scaleArea(size_t width, size_t height, size_t xOffset /* = 0 */, size_
  * @returns bool
 **/
 
-bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> initializePixel, size_t xOffset /* = 0*/, size_t yOffset /* = 0*/) {
+bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*&)> initializePixel, size_t xOffset /* = 0*/, size_t yOffset /* = 0*/) {
 
   //Check if image will be actually be enlarged
   if (width <= header->width && height <= header->height) {
@@ -701,7 +701,10 @@ bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> i
   //Store previous size
   size_t prevWidth = header->width;
   size_t prevHeight = header->height;
-  //TODO: add offset
+  //Since pixels are stored bottom to top, we need to flip and then resize the matrix
+  if (!flipVertical()) {
+    return false;
+  }
   //Convert image to matrix
   std::vector<std::vector<Pixel*>> pixelMatrix;
   //Store pixels in a matrix
@@ -713,6 +716,58 @@ bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> i
       counter++;
     }
     pixelMatrix.push_back(rowVector);
+  }
+  //Handle offset in X
+  if (xOffset > 0) {
+    //We need to add n element at the beginning of each row
+    for (size_t row = 0; row < prevHeight; row++) {
+      std::vector<Pixel*> rowVector = pixelMatrix.at(row);
+      std::vector<Pixel*> rowWithOffset;
+      //Add offset
+      for (size_t column = 0; column < xOffset; column++) {
+        //Add new pixel and transform it
+        Pixel* pixelToAdd = nullptr;
+        //Transform pixel
+        initializePixel(pixelToAdd);
+        if (pixelToAdd == nullptr) {
+          pixelToAdd = new Pixel();
+        }
+        //Add pixel to row vector
+        rowWithOffset.push_back(pixelToAdd);
+      }
+      //Finally add to rowWithOffset rowVector
+      rowWithOffset.insert(std::end(rowWithOffset), std::begin(rowVector), std::end(rowVector));
+      pixelMatrix.at(row) = rowWithOffset;
+    }
+    //Update prevWidth with prevWidth + xOffset
+    prevWidth += xOffset;
+  }
+  //Handle offset in Y
+  if (yOffset > 0) {
+    //We need to add n rows at the top of the image
+    std::vector<std::vector<Pixel*>> offsetMatrix;
+    for (size_t row = 0; row < yOffset; row++) {
+      std::vector<Pixel*> rowVector;
+      for (size_t column = 0; column < prevWidth; column++) {
+        //Add new pixel and transform it
+        Pixel* pixelToAdd = nullptr;
+        //Transform pixel
+        initializePixel(pixelToAdd);
+        if (pixelToAdd == nullptr) {
+          pixelToAdd = new Pixel();
+        }
+        //Add pixel to row vector
+        rowVector.push_back(pixelToAdd);
+      }
+      //Add to offsetMatrix row Vector
+      offsetMatrix.push_back(rowVector);
+    }
+    //Add to offsetMatrix pixelMatrix
+    offsetMatrix.insert(std::end(offsetMatrix), std::begin(pixelMatrix), std::end(pixelMatrix));
+    //Pixel matrix becomes offsetMatrix
+    pixelMatrix = offsetMatrix;
+    //Update prevWidth with prevWidth + yOffset
+    prevHeight += yOffset;
   }
   //Start with adding pixels on X on currently existing rows
   for (size_t row = 0; row < prevHeight; row++) {
@@ -727,8 +782,8 @@ bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> i
       }
       //Add pixel to row vector
       rowVector.push_back(pixelToAdd);
-      pixelMatrix.at(row) = rowVector;
     }
+    pixelMatrix.at(row) = rowVector;
   }
   //Now add pixels on Y with width = newWidth
   for (size_t row = prevHeight; row < height; row++) {
@@ -756,6 +811,10 @@ bool Bmp::enlargeArea(size_t width, size_t height, std::function<void(Pixel*)> i
     for (size_t column = 0; column < width; column++) {
       pixelArray.push_back(pixelMatrix.at(row).at(column));
     }
+  }
+  //Re-flip image
+  if (!flipVertical()) {
+    return false;
   }
   return true;
 }

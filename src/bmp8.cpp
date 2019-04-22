@@ -154,7 +154,7 @@ bool Bmp8::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, size
       size_t enlargedWidth = (width > currWidth) ? width : currWidth;
       size_t enlargedHeight = (height > currHeight) ? height : currHeight;
       //Initialize Pixel lambda
-      std::function<void(Pixel*)> initializePixel = [](Pixel* px) { px = new BytePixel(255); };
+      std::function<void(Pixel*&)> initializePixel = [](Pixel*& px) { px = new BytePixel(255); };
       if (!enlargeArea(enlargedWidth, enlargedHeight, initializePixel, xOffset, yOffset)) {
         return false;
       }

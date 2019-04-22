@@ -74,7 +74,7 @@ public:
 protected:
   bool flip(FlipType flipType);
   bool scaleArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
-  bool enlargeArea(size_t width, size_t height, std::function<void (Pixel*)> initializePixel, size_t xOffset = 0, size_t yOffset = 0);
+  bool enlargeArea(size_t width, size_t height, std::function<void (Pixel*&)> initializePixel, size_t xOffset = 0, size_t yOffset = 0);
   int roundToMultiple(int toRound, int multiple);
   bmp::Header* header;
   uint8_t* dibData;
