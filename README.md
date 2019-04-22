@@ -145,6 +145,14 @@ Resize the image area, an offset can be specified.
 bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
 ```
 
+#### resizeImage
+
+Resize the image
+
+```cpp
+bool resizeImage(size_t width, size_t height);
+```
+
 #### getWidth
 
 ```cpp

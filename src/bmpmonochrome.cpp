@@ -199,6 +199,55 @@ bool Bmpmonochrome::resizeArea(size_t width, size_t height, size_t xOffset /* = 
 }
 
 /**
+ * @function resizeImage
+ * @description resize image (not only area) applying bilinear image scaling
+ * @param size_t
+ * @param size_t
+ * @returns bool
+**/
+
+bool Bmpmonochrome::resizeImage(size_t width, size_t height) {
+  //Apply resizing
+  size_t prevWidth = header->width;
+  size_t prevHeight = header->height;
+  std::vector<Pixel*> resizedArray; //New pixel vector
+  float xRatio = static_cast<float>(prevWidth - 1) / width;
+  float yRatio = static_cast<float>(prevHeight - 1) / height;
+  //Working variables
+  BWPixel *px1, *px2, *px3, *px4;
+  int x, y, index;
+  float xDiff, yDiff;
+  uint8_t value;
+  for (int row = 0; row < height; row++) {
+    for (int column = 0; column < width; column++) {
+      x = static_cast<int>(xRatio * column);
+      y = static_cast<int>(yRatio * row);
+      xDiff = (xRatio * column) - x;
+      yDiff = (yRatio * row) - y;
+      index = ((y * prevWidth) + x);
+      px1 = reinterpret_cast<BWPixel*>(pixelArray.at(index));
+      px2 = reinterpret_cast<BWPixel*>(pixelArray.at(index + 1));
+      px3 = reinterpret_cast<BWPixel*>(pixelArray.at(index + prevWidth));
+      px4 = reinterpret_cast<BWPixel*>(pixelArray.at(index + prevWidth + 1));
+      //Yb = Ab(1-w)(1-h) + Bb(w)(1-h) + Cb(h)(1-w) + Db(wh)
+      value = (px1->getValue() * (1 - xDiff) * (1 - yDiff)) + (px2->getValue() * (xDiff) * (1 - yDiff)) + (px3->getValue() * (yDiff) * (1 - xDiff)) + (px4->getValue() * (xDiff * yDiff));
+      //Instance new pixel
+      Pixel* resizedPixel = new BWPixel(value);
+      //Push pixel into array
+      resizedArray.push_back(resizedPixel);
+    }
+  }
+  //Delete all pixels in previous pixel array
+  for (auto& pixel : pixelArray) {
+    BWPixel* px = reinterpret_cast<BWPixel*>(pixel);
+    delete px;
+  }
+  pixelArray = resizedArray;
+  //Change header parameters
+  return Bmp::resizeImage(width, height);
+}
+
+/**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
  * @param int

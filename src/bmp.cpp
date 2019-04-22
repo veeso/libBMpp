@@ -480,6 +480,21 @@ bool Bmp::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, size_
 }
 
 /**
+ * @function resizeImage
+ * @description resize image (not only area) applying bilinear image scaling
+ * @param size_t
+ * @param size_t
+ * @returns bool
+**/
+
+bool Bmp::resizeImage(size_t width, size_t height) {
+  header->width = width;
+  header->height = height;
+  //Pixel manipulation must be done by subclasses
+  return true;
+}
+
+/**
  * @function getWidth
  * @description: returns the image width
  * @returns size_t
