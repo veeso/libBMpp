@@ -43,6 +43,7 @@ public:
   bmp::RGBPixel* getPixelAt(int row, int column);
   bool toGreyScale(int greyLevels = 255);
   bool toSepiaTone();
+  bool invert();
   bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   bool resizeImage(size_t width, size_t height);
 

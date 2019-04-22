@@ -52,6 +52,7 @@ int main(int argc, char* argv[]) {
     std::cout << "5: resizeImage(arg1, arg2)" << std::endl;
     std::cout << "6: toGreyScale(arg1)" << std::endl;
     std::cout << "7: toSepiaTone()" << std::endl;
+    std::cout << "8: invert()" << std::endl;
     return 1;
   }
 
@@ -155,6 +156,11 @@ int main(int argc, char* argv[]) {
     myBmp->toSepiaTone();
     break;
   }
+  case 8: {
+    std::cout << "Applying: invert()\n";
+    myBmp->invert();
+    break;
+  }
   default:
     break;
   }
@@ -193,6 +199,7 @@ int main(int argc, char* argv[]) {
   std::cout << "5: resizeImage(arg1, arg2)" << std::endl;
   std::cout << "6: toGreyScale(arg1)" << std::endl;
   std::cout << "7: toSepiaTone()" << std::endl;
+  std::cout << "8: invert()" << std::endl;
   std::cout << "bmpFile (QUIT to exit): ";
   std::cin >> bmpFilename;
   if (bmpFilename == "QUIT") {

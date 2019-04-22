@@ -249,6 +249,14 @@ bool toSepiaTone();
 
 Converts image to sepia tone.
 
+#### Bmp24::invert
+
+```cpp
+bool invert();
+```
+
+Invert image colors.
+
 #### Bmp24::getPixelAt
 
 ```cpp
@@ -288,6 +296,14 @@ bool toSepiaTone();
 ```
 
 Converts image to sepia tone.
+
+#### Bmp32::invert
+
+```cpp
+bool invert();
+```
+
+Invert image colors.
 
 #### Bmp32::getPixelAt
 

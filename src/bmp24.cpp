@@ -244,6 +244,24 @@ bool Bmp24::toSepiaTone() {
 }
 
 /**
+ * @function invert
+ * @description invert colors
+ * @returns bool
+**/
+
+bool Bmp24::invert() {
+  //Convert each pixel to sepia
+  for (auto& pixel : pixelArray) {
+    RGBPixel* rgbPixel = reinterpret_cast<RGBPixel*>(pixel);
+    uint8_t red = 255 - rgbPixel->getRed();
+    uint8_t green = 255 - rgbPixel->getGreen();
+    uint8_t blue = 255 - rgbPixel->getBlue();
+    rgbPixel->setPixel(red, green, blue);
+  }
+  return true;
+}
+
+/**
  * @function resizeArea
  * @description resize area (does not scale image), both enlarging or scaling it
  * @param size_t width
