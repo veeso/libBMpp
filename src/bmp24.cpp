@@ -156,13 +156,18 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
  * @param int
+ * @param int
  * @param uint8_t
  * @param uint8_t
  * @param uint8_t
  * @returns bool
 **/
 
-bool Bmp24::setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue) {
+bool Bmp24::setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
 
   if (index >= static_cast<int>(pixelArray.size())) {
     return false;
@@ -170,6 +175,26 @@ bool Bmp24::setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue) {
   RGBPixel* reqPixel = reinterpret_cast<RGBPixel*>(pixelArray.at(index));
   reqPixel->setPixel(red, green, blue);
   return true;
+}
+
+/**
+ * @function getPixelAt
+ * @description return pointer to pixel in the provided position
+ * @param int
+ * @param int
+ * @returns RGBPixel*
+**/
+
+RGBPixel* Bmp24::getPixelAt(int row, int column) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
+
+  if (index >= static_cast<int>(pixelArray.size())) {
+    return nullptr;
+  }
+  return reinterpret_cast<RGBPixel*>(pixelArray.at(index));
 }
 
 /**
@@ -259,19 +284,4 @@ bool Bmp24::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, siz
   }
   //Return OK
   return true;
-}
-
-/**
- * @function getPixelAt
- * @description return pointer to pixel in the provided position
- * @param int
- * @returns RGBPixel*
-**/
-
-RGBPixel* Bmp24::getPixelAt(int index) {
-
-  if (index >= static_cast<int>(pixelArray.size())) {
-    return nullptr;
-  }
-  return reinterpret_cast<RGBPixel*>(pixelArray.at(index));
 }

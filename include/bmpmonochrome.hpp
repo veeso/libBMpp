@@ -38,9 +38,8 @@ public:
   uint8_t* encodeBmp(size_t* dataSize);
   //Image operations
   bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
-  bool setPixelAt(int index, uint8_t value);
-  //Getters
-  bmp::BWPixel* getPixelAt(int index);
+  bool setPixelAt(int row, int column, uint8_t value);
+  bmp::BWPixel* getPixelAt(int row, int column);
 
 };
 

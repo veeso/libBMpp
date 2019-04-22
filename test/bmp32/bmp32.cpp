@@ -98,13 +98,15 @@ int main(int argc, char* argv[]) {
     size_t width = myBmp->getWidth();
     size_t height = myBmp->getHeight();
     size_t pixelAmount = width * height;
-    for (size_t pixel = 0; pixel < pixelAmount; pixel++) {
-      bmp::RGBAPixel* currPixel = myBmp->getPixelAt(pixel);
-      if (currPixel == nullptr) {
-        std::cout << "Out of range\n";
-        continue;
+    for (size_t i = 0; i < height; i++) {
+      for (size_t j = 0; j < width; j++) {
+        bmp::RGBAPixel* currPixel = myBmp->getPixelAt(i, j);
+        if (currPixel == nullptr) {
+          std::cout << "Out of range\n";
+          continue;
+        }
+        std::cout << "Pixel[" << i << "," << j << "]: (" << std::to_string(currPixel->getRed()) << "," << std::to_string(currPixel->getGreen()) << "," << std::to_string(currPixel->getBlue()) << "," << std::to_string(currPixel->getAlpha()) << ");" << std::endl;
       }
-      std::cout << "Pixel[" << pixel << "]: (" << std::to_string(currPixel->getRed()) << "," << std::to_string(currPixel->getGreen()) << "," << std::to_string(currPixel->getBlue()) << "," << std::to_string(currPixel->getAlpha()) << ");" << std::endl;
     }
     break;
   }

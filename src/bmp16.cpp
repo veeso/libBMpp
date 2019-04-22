@@ -183,13 +183,16 @@ bool Bmp16::resizeArea(size_t width, size_t height, size_t xOffset /* = 0*/, siz
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
  * @param int
- * @param uint8_t
- * @param uint8_t
- * @param uint8_t
+ * @param int
+ * @param uint16_t
  * @returns bool
 **/
 
-bool Bmp16::setPixelAt(int index, uint16_t value) {
+bool Bmp16::setPixelAt(int row, int column, uint16_t value) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
 
   if (index >= static_cast<int>(pixelArray.size())) {
     return false;
@@ -203,10 +206,15 @@ bool Bmp16::setPixelAt(int index, uint16_t value) {
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
  * @param int
- * @returns WordPixel*
+ * @param int
+ * @returns RGBPixel*
 **/
 
-WordPixel* Bmp16::getPixelAt(int index) {
+WordPixel* Bmp16::getPixelAt(int row, int column) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
 
   if (index >= static_cast<int>(pixelArray.size())) {
     return nullptr;

@@ -170,7 +170,7 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp8::setPixelAt
 
 ```cpp
-bool setPixelAt(int index, uint8_t value);
+bool setPixelAt(int row, int column, uint8_t value);
 ```
 
 set the 255 value of the pixel in index position.  
@@ -180,7 +180,7 @@ Returns false if the requested pixel, does not exist.
 #### Bmp8::getPixelAt
 
 ```cpp
-bmp::BytePixel* getPixelAt(int index);
+bmp::BytePixel* getPixelAt(int row, int column);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -194,7 +194,7 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp16::setPixelAt
 
 ```cpp
-bool setPixelAt(int index, uint16_t value);
+bool setPixelAt(int row, int column, uint16_t value);
 ```
 
 set the 255 value of the pixel in index position.  
@@ -204,7 +204,7 @@ Returns false if the requested pixel, does not exist.
 #### Bmp16::getPixelAt
 
 ```cpp
-bmp::WordPixel* getPixelAt(int index);
+bmp::WordPixel* getPixel(int row, int column);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -218,7 +218,7 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp24::setPixelAt
 
 ```cpp
-bool setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue);
+bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue);
 ```
 
 set the RGB value of the pixel in index position.  
@@ -244,7 +244,7 @@ Converts image to sepia tone.
 #### Bmp24::getPixelAt
 
 ```cpp
-bmp::RGBPixel* getPixelAt(int index);
+bmp::RGBPixel* getPixel(int row, int column);
 ```
 
 Returns the pointer to the RGBPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -258,7 +258,7 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp32::setPixelAt
 
 ```cpp
-bool setPixelAt(int index, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 ```
 
 set the RGBa value of the pixel in index position.  
@@ -284,7 +284,7 @@ Converts image to sepia tone.
 #### Bmp32::getPixelAt
 
 ```cpp
-bmp::RGBAPixel* getPixelAt(int index);
+bmp::RGBAPixel* getPixel(int row, int column);
 ```
 
 Returns the pointer to the RGBAPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -298,13 +298,13 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmpmonochrome::setPixelAt
 
 ```cpp
-bool setPixelAt(int index, uint8_t value);
+bool setPixelAt(int row, int column, uint8_t value);
 ```
 
 #### Bmpmonochrome::getPixelAt
 
 ```cpp
-bmp::BWPixel* getPixelAt(int index);
+bmp::BWPixel* getPixel(int row, int column);
 ```
 
 Returns the pointer to the BWPixel in provided position. If the requested pixel does not exist, returns nullptr

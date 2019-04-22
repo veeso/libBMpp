@@ -202,11 +202,18 @@ bool Bmpmonochrome::resizeArea(size_t width, size_t height, size_t xOffset /* = 
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
  * @param int
+ * @param int
+ * @param uint8_t
+ * @param uint8_t
  * @param uint8_t
  * @returns bool
 **/
 
-bool Bmpmonochrome::setPixelAt(int index, uint8_t value) {
+bool Bmpmonochrome::setPixelAt(int row, int column, uint8_t value) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
 
   if (index >= static_cast<int>(pixelArray.size())) {
     return false;
@@ -220,10 +227,15 @@ bool Bmpmonochrome::setPixelAt(int index, uint8_t value) {
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
  * @param int
- * @returns RGBPixel*
+ * @param int
+ * @returns BWPixel*
 **/
 
-BWPixel* Bmpmonochrome::getPixelAt(int index) {
+BWPixel* Bmpmonochrome::getPixelAt(int row, int column) {
+
+  //Get index, considering that pixels are stored bottom to top
+  int reversedRow = (header->height - 1 - row); // h - 1 - r
+  int index = (header->width * reversedRow) + column;
 
   if (index >= static_cast<int>(pixelArray.size())) {
     return nullptr;
