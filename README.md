@@ -6,7 +6,7 @@
 Lib **Bitmap Plus Plus**  
 Developed by *Christian Visintin*
 
-Version 1.0.0 (22/04/2019)
+Version 1.0.1 (24/04/2019)
 
 ---
 
@@ -189,6 +189,7 @@ Returns false if the requested pixel, does not exist.
 
 ```cpp
 bmp::BytePixel* getPixelAt(int row, int column);
+bmp::BytePixel* getPixel(int index);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -213,6 +214,7 @@ Returns false if the requested pixel, does not exist.
 
 ```cpp
 bmp::WordPixel* getPixel(int row, int column);
+bmp::WordPixel* getPixel(int index);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -261,6 +263,7 @@ Invert image colors.
 
 ```cpp
 bmp::RGBPixel* getPixel(int row, int column);
+bmp::RGBPixel* getPixel(int index);
 ```
 
 Returns the pointer to the RGBPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -309,6 +312,7 @@ Invert image colors.
 
 ```cpp
 bmp::RGBAPixel* getPixel(int row, int column);
+bmp::RGBAPixel* getPixel(int index);
 ```
 
 Returns the pointer to the RGBAPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -329,6 +333,7 @@ bool setPixelAt(int row, int column, uint8_t value);
 
 ```cpp
 bmp::BWPixel* getPixel(int row, int column);
+bmp::BWPixel* getPixel(int index);
 ```
 
 Returns the pointer to the BWPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -346,6 +351,10 @@ bmp::Bmp* getBmp(uint8_t* data, size_t dataSize, size_t& bitsPerPixel);
 ---
 
 ## Changelog
+
+### 1.0.1 (24/04/2019)
+
+* Added getPixelAt with vector index as argument
 
 ---
 

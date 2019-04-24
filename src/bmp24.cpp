@@ -194,6 +194,21 @@ RGBPixel* Bmp24::getPixelAt(int row, int column) {
   if (index >= static_cast<int>(pixelArray.size())) {
     return nullptr;
   }
+  return getPixelAt(index);
+}
+
+/**
+ * @function getPixelAt
+ * @description return pointer to pixel in the provided position
+ * @param int
+ * @returns RGBPixel*
+**/
+
+RGBPixel* Bmp24::getPixelAt(int index) {
+
+  if (index >= static_cast<int>(pixelArray.size())) {
+    return nullptr;
+  }
   return reinterpret_cast<RGBPixel*>(pixelArray.at(index));
 }
 
@@ -324,8 +339,8 @@ bool Bmp24::resizeImage(size_t width, size_t height) {
   int x, y, index;
   float xDiff, yDiff;
   uint8_t red, green, blue;
-  for (int row = 0; row < height; row++) {
-    for (int column = 0; column < width; column++) {
+  for (size_t row = 0; row < height; row++) {
+    for (size_t column = 0; column < width; column++) {
       x = static_cast<int>(xRatio * column);
       y = static_cast<int>(yRatio * row);
       xDiff = (xRatio * column) - x;

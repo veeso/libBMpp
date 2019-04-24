@@ -44,6 +44,7 @@ public:
   bool resizeImage(size_t width, size_t height);
   bool setPixelAt(int row, int column, uint16_t value);
   bmp::WordPixel* getPixelAt(int row, int column);
+  bmp::WordPixel* getPixelAt(int index);
 
 };
 

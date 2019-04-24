@@ -41,6 +41,7 @@ public:
   //Image operations
   bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue);
   bmp::RGBPixel* getPixelAt(int row, int column);
+  bmp::RGBPixel* getPixelAt(int index);
   bool toGreyScale(int greyLevels = 255);
   bool toSepiaTone();
   bool invert();

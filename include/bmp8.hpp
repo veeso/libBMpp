@@ -44,6 +44,7 @@ public:
   bool resizeImage(size_t width, size_t height);
   bool setPixelAt(int row, int column, uint8_t value);
   bmp::BytePixel* getPixelAt(int row, int column);
+  bmp::BytePixel* getPixelAt(int index);
 
 };
 
