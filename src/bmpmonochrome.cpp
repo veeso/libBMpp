@@ -141,7 +141,7 @@ bool Bmpmonochrome::decodeBmp(uint8_t* bmpData, size_t dataSize) {
  * @returns uint8_t*
 **/
 
-uint8_t* Bmpmonochrome::encodeBmp(size_t* dataSize) {
+uint8_t* Bmpmonochrome::encodeBmp(size_t& dataSize) {
   size_t nextMultipleOf4 = roundToMultiple(header->width, 4);
   size_t paddingSize = nextMultipleOf4 - header->width;
   size_t realRowSize = (header->width);
@@ -153,7 +153,7 @@ uint8_t* Bmpmonochrome::encodeBmp(size_t* dataSize) {
   }
   size_t byteCounter = 0;
   size_t rowPositionCounter = 0;
-  for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize - 1;) {
+  for (size_t dataPtr = header->dataOffset - 1; dataPtr < dataSize - 1;) {
     //Get byte to write
     uint8_t colorValue = 0;
     for (size_t i = 0; i < 8; i++, byteCounter++) {
@@ -213,7 +213,7 @@ bool Bmpmonochrome::readBmp(const std::string& bmpFile) {
 
 bool Bmpmonochrome::writeBmp(const std::string& bmpFile) {
   size_t outDataSize;
-  uint8_t* outBuf = encodeBmp(&outDataSize);
+  uint8_t* outBuf = encodeBmp(outDataSize);
   if (outBuf == nullptr) {
     return false;
   }

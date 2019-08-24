@@ -128,7 +128,7 @@ bool Bmp16::decodeBmp(uint8_t* bmpData, size_t dataSize) {
  * @returns uint8_t*
 **/
 
-uint8_t* Bmp16::encodeBmp(size_t* dataSize) {
+uint8_t* Bmp16::encodeBmp(size_t& dataSize) {
   //Get our fundamental parameters
   size_t nextMultipleOf4 = roundToMultiple(header->width * (header->bitsPerPixel / 8), 4);
   size_t paddingSize = nextMultipleOf4 - header->width * (header->bitsPerPixel / 8);
@@ -143,7 +143,7 @@ uint8_t* Bmp16::encodeBmp(size_t* dataSize) {
   //Fill data
   int pxIndex = -1;
   size_t rowPositionCounter = 0;
-  for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize - 1;) {
+  for (size_t dataPtr = header->dataOffset - 1; dataPtr < dataSize - 1;) {
     //Set pixel
     WordPixel* currPixel = reinterpret_cast<WordPixel*>(pixelArray.at(++pxIndex));
     uint16_t value = currPixel->getValue();
@@ -198,7 +198,7 @@ bool Bmp16::readBmp(const std::string& bmpFile) {
 
 bool Bmp16::writeBmp(const std::string& bmpFile) {
   size_t outDataSize;
-  uint8_t* outBuf = encodeBmp(&outDataSize);
+  uint8_t* outBuf = encodeBmp(outDataSize);
   if (outBuf == nullptr) {
     return false;
   }

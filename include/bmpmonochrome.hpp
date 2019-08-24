@@ -36,7 +36,7 @@ public:
   ~Bmpmonochrome();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
-  uint8_t* encodeBmp(size_t* dataSize);
+  uint8_t* encodeBmp(size_t& dataSize);
   //I/O
   bool readBmp(const std::string& bmpFile);
   bool writeBmp(const std::string& bmpFile);

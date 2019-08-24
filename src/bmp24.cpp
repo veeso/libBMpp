@@ -142,7 +142,7 @@ bool Bmp24::decodeBmp(uint8_t* bmpData, size_t dataSize) {
  * @returns uint8_t*
 **/
 
-uint8_t* Bmp24::encodeBmp(size_t* dataSize) {  
+uint8_t* Bmp24::encodeBmp(size_t& dataSize) {  
 
   //Get our fundamental parameters
   size_t nextMultipleOf4 = roundToMultiple(header->width * (header->bitsPerPixel / 8), 4);

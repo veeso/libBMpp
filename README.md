@@ -83,6 +83,12 @@ Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
 
 It is possible to create a new Bmp object passing a pixel array (of any kind), width and height of the image to create a new bitmap.
 
+There's also a copy constructor which copies both the header and the pixels
+
+```cpp
+Bmp(const bmp::Bmp& bmp);
+```
+
 #### Destructor
 
 ```cpp
@@ -104,12 +110,28 @@ If was unable to parse the bmpData or was invalid returns false.
 #### encodeBmp
 
 ```cpp
-uint8_t* encodeBmp(size_t* dataSize);
+uint8_t* encodeBmp(size_t& dataSize);
 ```
 
 Starting from the header struct, this method creates the image buffer and returns a pointer to the buffer allocated. This method takes care only of allocating enough space to put the raster data and filling the first 54 bytes with the header. The encoding of the raster data is a task for the class which extends Bmp.
 
 If was unable to allocate the buffer, returns nullptr
+
+#### readBmp
+
+Reads a bmp file and decodes it. The decoded bitmap's header and pixels become attributes of the object.
+
+```cpp
+bool readBmp(const std::string& bmpFile);
+```
+
+#### writeBmp
+
+Encodes the bitmap stored in the object and writes a bmp file.
+
+```cpp
+bool writeBmp(const std::string& bmpFile);
+```
 
 #### rotate
 

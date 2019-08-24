@@ -239,7 +239,7 @@ bool Bmp::decodeBmp(uint8_t* bmpData, size_t dataSize) {
  * @returns uint8_t*
 **/
 
-uint8_t* Bmp::encodeBmp(size_t* dataSize) {
+uint8_t* Bmp::encodeBmp(size_t& dataSize) {
 
   if (header == nullptr) {
     return nullptr;
@@ -254,16 +254,16 @@ uint8_t* Bmp::encodeBmp(size_t* dataSize) {
   //Recalc dataSize
   header->dataSize = pxDataSize;
   //We need to allocate the buffer now (dataOffset + dataSize)
-  *dataSize = header->dataOffset + header->dataSize;
-  uint8_t* bmpData = new uint8_t[*dataSize];
+  dataSize = header->dataOffset + header->dataSize;
+  uint8_t* bmpData = new uint8_t[dataSize];
   //Fill header
   bmpData[0] = 'B';
   bmpData[1] = 'M';
   //FileSize
-  bmpData[2] = *dataSize;
-  bmpData[3] = *dataSize >> 8;
-  bmpData[4] = *dataSize >> 16;
-  bmpData[5] = *dataSize >> 24;
+  bmpData[2] = dataSize;
+  bmpData[3] = dataSize >> 8;
+  bmpData[4] = dataSize >> 16;
+  bmpData[5] = dataSize >> 24;
   //Reserved
   bmpData[6] = 0;
   bmpData[7] = 0;
