@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmpmonochrome.hpp
+ *   libBMpp - bmpmonochrome.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -31,7 +31,8 @@ class Bmpmonochrome : public Bmp {
 
 public:
   Bmpmonochrome();
-  Bmpmonochrome(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmpmonochrome(size_t width, size_t height, uint8_t defaultColor = 1);
+  Bmpmonochrome(const Bmpmonochrome& bmp);
   ~Bmpmonochrome();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
@@ -39,9 +40,10 @@ public:
   //Image operations
   bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   bool resizeImage(size_t width, size_t height);
-  bool setPixelAt(int row, int column, uint8_t value);
-  bmp::BWPixel* getPixelAt(int row, int column);
-  bmp::BWPixel* getPixelAt(int index);
+  bool setPixelAt(size_t row, size_t column, uint8_t value);
+  bool setPixelAt(size_t, uint8_t value);
+  bmp::BWPixel* getPixelAt(size_t row, size_t column);
+  bmp::BWPixel* getPixelAt(size_t index);
 
 };
 

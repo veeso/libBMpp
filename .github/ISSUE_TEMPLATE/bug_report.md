@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help me improving libBMPP
+about: Create a report to help me improving libBMpp
 title: "[BUG]"
 labels: bug
 assignees: ChristianVisintin

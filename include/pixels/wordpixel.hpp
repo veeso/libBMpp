@@ -1,5 +1,5 @@
 /**
- *   libBMPP - wordpixel.hpp
+ *   libBMpp - wordpixel.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

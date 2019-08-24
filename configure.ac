@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([libBMPP], [0.1.0], [https://github.com/ChristianVisintin/libBMPP])
+AC_INIT([libBMpp], [0.1.0], [https://github.com/ChristianVisintin/libBMpp])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([include/bmp.hpp])
 AC_CONFIG_HEADERS([config.h])

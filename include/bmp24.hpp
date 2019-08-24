@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp24.hpp
+ *   libBMpp - bmp24.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -33,15 +33,17 @@ class Bmp24 : public Bmp {
 
 public:
   Bmp24();
-  Bmp24(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmp24(size_t width, size_t height, uint8_t defaultRed = 255, uint8_t defaultGreen = 255, uint8_t defaultBlue = 255);
+  Bmp24(const Bmp24& bmp);
   ~Bmp24();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
   uint8_t* encodeBmp(size_t* dataSize);
   //Image operations
-  bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue);
-  bmp::RGBPixel* getPixelAt(int row, int column);
-  bmp::RGBPixel* getPixelAt(int index);
+  bool setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue);
+  bool setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue);
+  bmp::RGBPixel* getPixelAt(size_t row, size_t column);
+  bmp::RGBPixel* getPixelAt(size_t index);
   bool toGreyScale(int greyLevels = 255);
   bool toSepiaTone();
   bool invert();

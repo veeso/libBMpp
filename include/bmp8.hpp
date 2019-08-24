@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp8.hpp
+ *   libBMpp - bmp8.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -34,7 +34,8 @@ class Bmp8 : public Bmp {
 
 public:
   Bmp8();
-  Bmp8(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmp8(size_t width, size_t height, uint8_t defaultColor = 255);
+  Bmp8(const Bmp8& bmp);
   ~Bmp8();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
@@ -42,9 +43,10 @@ public:
   //Image operations
   bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   bool resizeImage(size_t width, size_t height);
-  bool setPixelAt(int row, int column, uint8_t value);
-  bmp::BytePixel* getPixelAt(int row, int column);
-  bmp::BytePixel* getPixelAt(int index);
+  bool setPixelAt(size_t row, size_t column, uint8_t value);
+  bool setPixelAt(size_t index, uint8_t value);
+  bmp::BytePixel* getPixelAt(size_t row, size_t column);
+  bmp::BytePixel* getPixelAt(size_t index);
 
 };
 

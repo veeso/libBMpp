@@ -1,5 +1,5 @@
 /**
- *   libBMPP - main.cpp
+ *   libBMpp - main.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License

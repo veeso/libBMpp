@@ -1,5 +1,5 @@
 /**
- *   libBMPP - pixel.hpp
+ *   libBMpp - pixel.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

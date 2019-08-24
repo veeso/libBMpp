@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp.hpp
+ *   libBMpp - bmp.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -56,7 +56,8 @@ class Bmp {
 
 public:
   Bmp();
-  Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmp(size_t width, size_t height);
+  Bmp(const Bmp& bmp);
   ~Bmp();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

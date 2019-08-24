@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp16.hpp
+ *   libBMpp - bmp16.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -34,7 +34,8 @@ class Bmp16 : public Bmp {
 
 public:
   Bmp16();
-  Bmp16(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmp16(size_t width, size_t height, uint16_t defaultColor = 65535);
+  Bmp16(const Bmp16& bmp);
   ~Bmp16();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
@@ -42,9 +43,10 @@ public:
   //Image operations
   bool resizeArea(size_t width, size_t height, size_t xOffset = 0, size_t yOffset = 0);
   bool resizeImage(size_t width, size_t height);
-  bool setPixelAt(int row, int column, uint16_t value);
-  bmp::WordPixel* getPixelAt(int row, int column);
-  bmp::WordPixel* getPixelAt(int index);
+  bool setPixelAt(size_t row, size_t column, uint16_t value);
+  bool setPixelAt(size_t index, uint16_t value);
+  bmp::WordPixel* getPixelAt(size_t row, size_t column);
+  bmp::WordPixel* getPixelAt(size_t index);
 
 };
 

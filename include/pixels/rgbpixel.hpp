@@ -1,5 +1,5 @@
 /**
- *   libBMPP - rgbpixel.hpp
+ *   libBMpp - rgbpixel.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License

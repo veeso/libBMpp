@@ -1,24 +1,24 @@
-# LibBMPP
+# libBmpp
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![HitCount](http://hits.dwyl.io/ChristianVisintin/libBMPP.svg)](http://hits.dwyl.io/ChristianVisintin/libBMPP) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBMPP.svg)](https://github.com/ChristianVisintin/libBMPP) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/libBMPP/issues)
+[![HitCount](http://hits.dwyl.io/ChristianVisintin/libBmpp.svg)](http://hits.dwyl.io/ChristianVisintin/libBmpp) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBmpp.svg)](https://github.com/ChristianVisintin/libBmpp) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBmpp.svg)](https://github.com/ChristianVisintin/libBmpp) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/libBmpp/issues)
 
-Lib **Bitmap Plus Plus**  
+Lib **BitMaplusplus**  
 Developed by *Christian Visintin*
 
-Version 1.0.1 (24/04/2019)
+Version 1.1.0 (24/08/2019)
 
 ---
 
-## What is libBMPP
+## What is libBmpp
 
-libBMPP is a library for working with Bitmaps in modern C++, which allows you to manipulate bitmaps images.
+libBmpp is a library for working with Bitmaps C++11 (or greater), which allows you to manipulate bitmaps images.
 
 ---
 
 ## Build
 
-libBMPP build is achievable through autotools, issuing the following commands:
+libBmpp build is achievable through autotools, issuing the following commands:
 
 ```sh
 ./autogen.sh
@@ -58,7 +58,7 @@ Header is the bitmap header storage structure and contains all the data which ar
 
 ### Bmp
 
-Bmp class is the main class of libBMPP. It is the superclass of every kind of Bitmap and takes care of handling pixels independently from the bits per pixel which is currently used. Bmp class also encodes and decodes the header and prepare the buffer for the raster data.
+Bmp class is the main class of libBmpp. It is the superclass of every kind of Bitmap and takes care of handling pixels independently from the bits per pixel which is currently used. Bmp class also encodes and decodes the header and prepare the buffer for the raster data.
 Every kind of Bmp (Bmp24 etc) must inherits from Bmp class.
 
 #### header
@@ -178,7 +178,8 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp8::setPixelAt
 
 ```cpp
-bool setPixelAt(int row, int column, uint8_t value);
+bool setPixelAt(size_t row, size_t column, uint8_t value);
+bool setPixelAt(size_t index,  uint8_t value);
 ```
 
 set the 255 value of the pixel in index position.  
@@ -188,8 +189,8 @@ Returns false if the requested pixel, does not exist.
 #### Bmp8::getPixelAt
 
 ```cpp
-bmp::BytePixel* getPixelAt(int row, int column);
-bmp::BytePixel* getPixel(int index);
+bmp::BytePixel* getPixelAt(size_t row, size_t column);
+bmp::BytePixel* getPixel(size_t index);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -203,7 +204,8 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp16::setPixelAt
 
 ```cpp
-bool setPixelAt(int row, int column, uint16_t value);
+bool setPixelAt(size_t row, size_t column, uint16_t value);
+bool setPixelAt(size_t index, uint16_t value);
 ```
 
 set the 255 value of the pixel in index position.  
@@ -213,8 +215,8 @@ Returns false if the requested pixel, does not exist.
 #### Bmp16::getPixelAt
 
 ```cpp
-bmp::WordPixel* getPixel(int row, int column);
-bmp::WordPixel* getPixel(int index);
+bmp::WordPixel* getPixel(size_t row, size_t column);
+bmp::WordPixel* getPixel(size_t index);
 ```
 
 Returns the pointer to the BytePixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -228,7 +230,8 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp24::setPixelAt
 
 ```cpp
-bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue);
+bool setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue);
+bool setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue);
 ```
 
 set the RGB value of the pixel in index position.  
@@ -262,8 +265,8 @@ Invert image colors.
 #### Bmp24::getPixelAt
 
 ```cpp
-bmp::RGBPixel* getPixel(int row, int column);
-bmp::RGBPixel* getPixel(int index);
+bmp::RGBPixel* getPixel(size_t row, size_t column);
+bmp::RGBPixel* getPixel(size_t index);
 ```
 
 Returns the pointer to the RGBPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -277,7 +280,8 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmp32::setPixelAt
 
 ```cpp
-bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+bool setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+bool setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
 ```
 
 set the RGBa value of the pixel in index position.  
@@ -311,8 +315,8 @@ Invert image colors.
 #### Bmp32::getPixelAt
 
 ```cpp
-bmp::RGBAPixel* getPixel(int row, int column);
-bmp::RGBAPixel* getPixel(int index);
+bmp::RGBAPixel* getPixel(size_t row, size_t column);
+bmp::RGBAPixel* getPixel(size_t index);
 ```
 
 Returns the pointer to the RGBAPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -326,14 +330,15 @@ In addition to Bmp methods, it provides the following methods:
 #### Bmpmonochrome::setPixelAt
 
 ```cpp
-bool setPixelAt(int row, int column, uint8_t value);
+bool setPixelAt(size_t row, size_t column, uint8_t value);
+bool setPixelAt(size_t index,  uint8_t value);
 ```
 
 #### Bmpmonochrome::getPixelAt
 
 ```cpp
-bmp::BWPixel* getPixel(int row, int column);
-bmp::BWPixel* getPixel(int index);
+bmp::BWPixel* getPixel(size_t row, size_t column);
+bmp::BWPixel* getPixel(size_t index);
 ```
 
 Returns the pointer to the BWPixel in provided position. If the requested pixel does not exist, returns nullptr
@@ -351,6 +356,14 @@ bmp::Bmp* getBmp(uint8_t* data, size_t dataSize, size_t& bitsPerPixel);
 ---
 
 ## Changelog
+
+### 1.1.0 (24/08/2019)
+
+* Added copy constructors for bitmaps
+* Added new constructor for creating an empty bmp
+* Removed pixel array constructor due to possible memory corruption; use setPixelAt instead
+* Changed int params to size_t
+* Added method to write BMP to file
 
 ### 1.0.1 (24/04/2019)
 

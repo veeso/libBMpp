@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp32.hpp
+ *   libBMpp - bmp32.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -33,15 +33,17 @@ class Bmp32 : public Bmp {
 
 public:
   Bmp32();
-  Bmp32(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
+  Bmp32(size_t width, size_t height, uint8_t defaultRed = 255, uint8_t defaultGreen = 255, uint8_t defaultBlue = 255, uint8_t defaultAlpha = 0);
+  Bmp32(const Bmp32& bmp);
   ~Bmp32();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
   uint8_t* encodeBmp(size_t* dataSize);
   //Image operations
-  bool setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
-  bmp::RGBAPixel* getPixelAt(int row, int column);
-  bmp::RGBAPixel* getPixelAt(int index);
+  bool setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+  bool setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha);
+  bmp::RGBAPixel* getPixelAt(size_t row, size_t column);
+  bmp::RGBAPixel* getPixelAt(size_t index);
   bool toGreyScale(int greyLevels = 255);
   bool toSepiaTone();
   bool invert();
