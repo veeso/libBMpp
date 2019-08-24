@@ -62,6 +62,9 @@ public:
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
   uint8_t* encodeBmp(size_t* dataSize);
+  //I/O
+  virtual bool readBmp(const std::string& bmpFile);
+  virtual bool writeBmp(const std::string& bmpFile);
   //Image operations
   bool rotate(int degrees);
   bool flipVertical();

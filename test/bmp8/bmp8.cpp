@@ -64,28 +64,13 @@ int main(int argc, char* argv[]) {
   }
 
   do {
-
-  std::ifstream bmpFile;
-  bmpFile.open(bmpFilename, std::ios::binary | std::ios::ate);
-  std::streamsize size = bmpFile.tellg();
-  bmpFile.seekg(0, std::ios::beg);
-
-  char* dataBuffer = new char[size];
-  if (!bmpFile.read(dataBuffer, size)) {
-    std::cout << "Could not read file " << bmpFilename << std::endl;
-    delete[] dataBuffer;
-    return 1;
-  }
-
   bmp::Bmp8* myBmp = new bmp::Bmp8();
   //Decode bitmap
-  if (!myBmp->decodeBmp(reinterpret_cast<uint8_t*>(dataBuffer), size)) {
+  if (!myBmp->readBmp(bmpFilename)) {
     std::cout << "Could not decode bitmap" << std::endl;
     delete myBmp;
     return 1;
   }
-
-  std::cout << "Bitmap decoded successfully (size: " << size << ")" << std::endl;
 
   std::cout << "Bitmap size(width: " << myBmp->getWidth() << "; height: " << myBmp->getHeight() << ")" << std::endl;
 
@@ -139,26 +124,9 @@ int main(int argc, char* argv[]) {
   }
 
   //re-Encode BMP
-  size_t outDataSize;
-  uint8_t* newBmp = myBmp->encodeBmp(&outDataSize);
-  //Write file
-  std::ofstream outFile;
-  outFile.open(outFilename);
-  if (!outFile.is_open()) {
-    std::cout << "Could not open file " << outFilename << std::endl;
-    delete[] newBmp;
-    delete[] dataBuffer;
-    delete myBmp;
-    return 1;
+  if(!myBmp->writeBmp(outFilename)) {
+    std::cout << "Could not write bmp to file " << outFilename << std::endl; 
   }
-  for (size_t i = 0; i < outDataSize; i++) {
-    outFile << newBmp[i];
-  }
-  std::cout << "\nOutDataSize: " << outDataSize << std::endl;
-  outFile.close();
-
-  delete[] newBmp;
-  delete[] dataBuffer;
   delete myBmp;
 
   //Ask for next commands

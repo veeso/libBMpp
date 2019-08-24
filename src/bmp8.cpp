@@ -23,6 +23,8 @@
 
 #include <bmp8.hpp>
 
+#include <fstream>
+
 #ifdef BMP_DEBUG
 #include <iostream>
 #include <string>
@@ -155,6 +157,60 @@ uint8_t* Bmp8::encodeBmp(size_t* dataSize) {
     }
   }
   return bmpData;
+}
+
+/**
+ * @function readBmp
+ * @description read a BMP file and decodes it. The decoded Bmp becomes the object
+ * @param const std::string& bmpFile
+ * @returns bool
+ */
+
+bool Bmp8::readBmp(const std::string& bmpFile) {
+  std::ifstream iFile;
+  iFile.open(bmpFile, std::ios::binary | std::ios::ate);
+  if (!iFile.is_open()) {
+    return false;
+  }
+  std::streamsize size = iFile.tellg();
+  iFile.seekg(0, std::ios::beg);
+  char* dataBuffer = new char[size];
+  if (!iFile.read(dataBuffer, size)) {
+    delete[] dataBuffer;
+    return false;
+  }
+  iFile.close();
+  //Decode
+  bool rc = decodeBmp(reinterpret_cast<uint8_t*>(dataBuffer), size);
+  delete[] dataBuffer;
+  return rc;
+}
+
+/**
+ * @function writeBmp
+ * @description encode BMP write the buffer to a file.
+ * @param const std::string& bmpFile
+ * @returns bool
+ */
+
+bool Bmp8::writeBmp(const std::string& bmpFile) {
+  size_t outDataSize;
+  uint8_t* outBuf = encodeBmp(&outDataSize);
+  if (outBuf == nullptr) {
+    return false;
+  }
+  //Write file
+  std::ofstream outFile;
+  outFile.open(bmpFile);
+  if (!outFile.is_open()) {
+    delete[] outBuf;
+    return false;
+  }
+  for (size_t i = 0; i < outDataSize; i++) {
+    outFile << outBuf[i];
+  }
+  outFile.close();
+  return true;
 }
 
 /**

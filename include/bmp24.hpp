@@ -39,6 +39,9 @@ public:
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
   uint8_t* encodeBmp(size_t* dataSize);
+  //I/O
+  bool readBmp(const std::string& bmpFile);
+  bool writeBmp(const std::string& bmpFile);
   //Image operations
   bool setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue);
   bool setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue);

@@ -364,6 +364,8 @@ bmp::Bmp* getBmp(uint8_t* data, size_t dataSize, size_t& bitsPerPixel);
 * Removed pixel array constructor due to possible memory corruption; use setPixelAt instead
 * Changed int params to size_t
 * Added method to write BMP to file
+* Use reference instead of pointer
+* Added const type when necessary
 
 ### 1.0.1 (24/04/2019)
 
