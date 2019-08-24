@@ -84,6 +84,21 @@ Bmp16::Bmp16(const Bmp16& bmp) : Bmp(bmp) {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp16::Bmp16(Bmp16* bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp->pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    WordPixel* copyPixel = reinterpret_cast<WordPixel*>(bmp->pixelArray.at(i));
+    pixelArray.push_back(new WordPixel(copyPixel->getValue()));
+  }
+}
+
+/**
  * @function ~Bmp16
  * @description Bmp16 class destructor
 **/

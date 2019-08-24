@@ -36,6 +36,7 @@ public:
   Bmp8();
   Bmp8(size_t width, size_t height, uint8_t defaultColor = 255);
   Bmp8(const Bmp8& bmp);
+  Bmp8(Bmp8* bmp);
   ~Bmp8();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

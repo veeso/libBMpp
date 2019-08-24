@@ -84,6 +84,21 @@ Bmp8::Bmp8(const Bmp8& bmp) : Bmp(bmp) {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp8::Bmp8(Bmp8* bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp->pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    BytePixel* copyPixel = reinterpret_cast<BytePixel*>(bmp->pixelArray.at(i));
+    pixelArray.push_back(new BytePixel(copyPixel->getValue()));
+  }
+}
+
+/**
  * @function ~Bmp8
  * @description Bmp8 class destructor
 **/

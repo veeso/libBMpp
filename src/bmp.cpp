@@ -74,10 +74,45 @@ Bmp::Bmp(size_t width, size_t height) {
 Bmp::Bmp(const Bmp& bmp) {
   header = new Header();
   header->bmpId = BMP_ID;
+  header->fileSize = bmp.header->fileSize;
+  header->dataOffset = bmp.header->dataOffset;
+  header->dibSize = bmp.header->dibSize;
   header->width = bmp.header->width;
   header->height = bmp.header->height;
-  header->paletteSize = 0;
-  header->importantColors = 0;
+  header->colorPlanes = bmp.header->colorPlanes;
+  header->bitsPerPixel = bmp.header->bitsPerPixel;
+  header->biRgb = bmp.header->biRgb;
+  header->dataSize = bmp.header->dataSize;
+  header->printSizeW = bmp.header->printSizeW;
+  header->printSizeH = bmp.header->printSizeH;
+  header->paletteSize = bmp.header->paletteSize;
+  header->importantColors = bmp.header->importantColors;
+  dibData = bmp.dibData; 
+}
+
+/**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp::Bmp(Bmp* bmp) {
+  header = new Header();
+  header->bmpId = BMP_ID;
+  header->fileSize = bmp->header->fileSize;
+  header->dataOffset = bmp->header->dataOffset;
+  header->dibSize = bmp->header->dibSize;
+  header->width = bmp->header->width;
+  header->height = bmp->header->height;
+  header->colorPlanes = bmp->header->colorPlanes;
+  header->bitsPerPixel = bmp->header->bitsPerPixel;
+  header->biRgb = bmp->header->biRgb;
+  header->dataSize = bmp->header->dataSize;
+  header->printSizeW = bmp->header->printSizeW;
+  header->printSizeH = bmp->header->printSizeH;
+  header->paletteSize = bmp->header->paletteSize;
+  header->importantColors = bmp->header->importantColors;
+  dibData = bmp->dibData; 
 }
 
 /**

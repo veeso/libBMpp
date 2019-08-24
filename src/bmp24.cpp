@@ -88,6 +88,21 @@ Bmp24::Bmp24(const Bmp24& bmp) : Bmp(bmp) {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp24::Bmp24(Bmp24* bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp->pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    RGBPixel* copyPixel = reinterpret_cast<RGBPixel*>(bmp->pixelArray.at(i));
+    pixelArray.push_back(new RGBPixel(copyPixel->getRed(), copyPixel->getGreen(), copyPixel->getBlue()));
+  }
+}
+
+/**
  * @function ~Bmp24
  * @description Bmp24 class destructor
 **/

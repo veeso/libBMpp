@@ -36,6 +36,7 @@ public:
   Bmp16();
   Bmp16(size_t width, size_t height, uint16_t defaultColor = 65535);
   Bmp16(const Bmp16& bmp);
+  Bmp16(Bmp16* bmp);
   ~Bmp16();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

@@ -83,6 +83,21 @@ Bmp32::Bmp32(const Bmp32& bmp) : Bmp(bmp) {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp32::Bmp32(Bmp32* bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp->pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    RGBAPixel* copyPixel = reinterpret_cast<RGBAPixel*>(bmp->pixelArray.at(i));
+    pixelArray.push_back(new RGBAPixel(copyPixel->getRed(), copyPixel->getGreen(), copyPixel->getBlue(), copyPixel->getAlpha()));
+  }
+}
+
+/**
  * @function ~Bmp32
  * @description Bmp32 class destructor
 **/

@@ -83,10 +83,11 @@ Bmp(std::vector<bmp::Pixel*> pixelArray, size_t width, size_t height);
 
 It is possible to create a new Bmp object passing a pixel array (of any kind), width and height of the image to create a new bitmap.
 
-There's also a copy constructor which copies both the header and the pixels
+There are also 2 copy constructors which copies both the header and the pixels
 
 ```cpp
 Bmp(const bmp::Bmp& bmp);
+Bmp(Bmp* bmp);
 ```
 
 #### Destructor

@@ -35,6 +35,7 @@ public:
   Bmp32();
   Bmp32(size_t width, size_t height, uint8_t defaultRed = 255, uint8_t defaultGreen = 255, uint8_t defaultBlue = 255, uint8_t defaultAlpha = 0);
   Bmp32(const Bmp32& bmp);
+  Bmp32(Bmp32* bmp);
   ~Bmp32();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

@@ -33,6 +33,7 @@ public:
   Bmpmonochrome();
   Bmpmonochrome(size_t width, size_t height, uint8_t defaultColor = 1);
   Bmpmonochrome(const Bmpmonochrome& bmp);
+  Bmpmonochrome(Bmpmonochrome* bmp);
   ~Bmpmonochrome();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

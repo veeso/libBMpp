@@ -81,6 +81,21 @@ Bmpmonochrome::Bmpmonochrome(const Bmpmonochrome& bmp) : Bmp(bmp) {
 }
 
 /**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmpmonochrome::Bmpmonochrome(Bmpmonochrome* bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp->pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    BWPixel* copyPixel = reinterpret_cast<BWPixel*>(bmp->pixelArray.at(i));
+    pixelArray.push_back(new BWPixel(copyPixel->getValue()));
+  }
+}
+
+/**
  * @function ~Bmpmonochrome
  * @description Bmpmonochrome class destructor
 **/

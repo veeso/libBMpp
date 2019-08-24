@@ -35,6 +35,7 @@ public:
   Bmp24();
   Bmp24(size_t width, size_t height, uint8_t defaultRed = 255, uint8_t defaultGreen = 255, uint8_t defaultBlue = 255);
   Bmp24(const Bmp24& bmp);
+  Bmp24(Bmp24* bmp);
   ~Bmp24();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);

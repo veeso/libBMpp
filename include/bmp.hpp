@@ -58,6 +58,7 @@ public:
   Bmp();
   Bmp(size_t width, size_t height);
   Bmp(const Bmp& bmp);
+  Bmp(Bmp* bmp);
   ~Bmp();
   //En/Decoding
   bool decodeBmp(uint8_t* bmpData, size_t dataSize);
