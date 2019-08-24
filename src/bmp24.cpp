@@ -158,7 +158,7 @@ uint8_t* Bmp24::encodeBmp(size_t& dataSize) {
   //Fill data
   int pxIndex = -1;
   size_t rowPositionCounter = 0;
-  for (size_t dataPtr = header->dataOffset - 1; dataPtr < *dataSize - 1;) {
+  for (size_t dataPtr = header->dataOffset - 1; dataPtr < dataSize - 1;) {
     if (++pxIndex >= static_cast<int>(pixelArray.size())) {
       break;
     }
@@ -216,7 +216,7 @@ bool Bmp24::readBmp(const std::string& bmpFile) {
 
 bool Bmp24::writeBmp(const std::string& bmpFile) {
   size_t outDataSize;
-  uint8_t* outBuf = encodeBmp(&outDataSize);
+  uint8_t* outBuf = encodeBmp(outDataSize);
   if (outBuf == nullptr) {
     return false;
   }
