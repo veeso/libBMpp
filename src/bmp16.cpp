@@ -213,6 +213,7 @@ bool Bmp16::writeBmp(const std::string& bmpFile) {
     outFile << outBuf[i];
   }
   outFile.close();
+  delete[] outBuf;
   return true;
 }
 

@@ -228,6 +228,7 @@ bool Bmpmonochrome::writeBmp(const std::string& bmpFile) {
     outFile << outBuf[i];
   }
   outFile.close();
+  delete[] outBuf;
   return true;
 }
 
@@ -372,12 +373,8 @@ bool Bmpmonochrome::setPixelAt(size_t index, uint8_t value) {
 BWPixel* Bmpmonochrome::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
-
-  if (index >= pixelArray.size()) {
-    return nullptr;
-  }
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
   return getPixelAt(index);
 }
 
