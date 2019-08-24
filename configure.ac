@@ -30,6 +30,6 @@ AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile src/Makefile include/Makefile include/params/Makefile include/parser/Makefile include/pixels/Makefile test/Makefile test/bmp8/Makefile test/bmp16/Makefile test/bmp24/Makefile test/bmp32/Makefile test/bmpmono/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile include/Makefile include/params/Makefile include/parser/Makefile include/pixels/Makefile test/Makefile test/bmp8/Makefile test/bmp16/Makefile test/bmp24/Makefile test/bmp32/Makefile test/bmpmono/Makefile test/complex/Makefile])
 
 AC_OUTPUT
