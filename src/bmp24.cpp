@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp24.hpp
+ *   libBMpp - bmp24.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -30,7 +30,7 @@
 
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function Bmp24
@@ -44,9 +44,14 @@ Bmp24::Bmp24() : Bmp() {
 /**
  * @function Bmp
  * @description Bmp class constructor
+ * @param size_t width
+ * @param size_t height
+ * @param uint8_t default red
+ * @param uint8_t default green
+ * @param uint8_t default blue
 **/
 
-Bmp24::Bmp24(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+Bmp24::Bmp24(size_t width, size_t height, uint8_t defaultRed, uint8_t defaultGreen, uint8_t defaultBlue) : Bmp(width, height) {
   //Set bits per pixel
   header->bitsPerPixel = 24;
   //FileSize must be set by child class
@@ -57,6 +62,27 @@ Bmp24::Bmp24(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(
   header->fileSize = 54 + dataSize;
   //DataSize must be set by child class
   header->dataSize = dataSize;
+  //Create empty image
+  size_t arraySize = header->width * header->height;
+  pixelArray.reserve(arraySize);
+  for (size_t i = 0; i < arraySize; i++) {
+    pixelArray.push_back(new RGBPixel(defaultRed, defaultGreen, defaultBlue));
+  }
+}
+
+/**
+ * @function Bmp24
+ * @description Bmp24 class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp24::Bmp24(const Bmp24& bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp.pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    RGBPixel* copyPixel = reinterpret_cast<RGBPixel*>(bmp.pixelArray.at(i));
+    pixelArray.push_back(new RGBPixel(copyPixel->getRed(), copyPixel->getGreen(), copyPixel->getBlue()));
+  }
 }
 
 /**
@@ -155,21 +181,34 @@ uint8_t* Bmp24::encodeBmp(size_t* dataSize) {
 /**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @param uint8_t
  * @param uint8_t
  * @param uint8_t
  * @returns bool
 **/
 
-bool Bmp24::setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue) {
+bool Bmp24::setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
+  return setPixelAt(index, red, green, blue);
+}
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+/**
+ * @function setPixelAt
+ * @description: replace pixel in a certain position with the provided one
+ * @param size_t
+ * @param uint8_t
+ * @param uint8_t
+ * @param uint8_t
+ * @returns bool
+**/
+
+bool Bmp24::setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue) {
+  if (index >= pixelArray.size()) {
     return false;
   }
   RGBPixel* reqPixel = reinterpret_cast<RGBPixel*>(pixelArray.at(index));
@@ -180,20 +219,16 @@ bool Bmp24::setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t 
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @returns RGBPixel*
 **/
 
-RGBPixel* Bmp24::getPixelAt(int row, int column) {
+RGBPixel* Bmp24::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
-
-  if (index >= static_cast<int>(pixelArray.size())) {
-    return nullptr;
-  }
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
   return getPixelAt(index);
 }
 
@@ -204,9 +239,9 @@ RGBPixel* Bmp24::getPixelAt(int row, int column) {
  * @returns RGBPixel*
 **/
 
-RGBPixel* Bmp24::getPixelAt(int index) {
+RGBPixel* Bmp24::getPixelAt(size_t index) {
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return reinterpret_cast<RGBPixel*>(pixelArray.at(index));
@@ -368,4 +403,6 @@ bool Bmp24::resizeImage(size_t width, size_t height) {
   pixelArray = resizedArray;
   //Change header parameters
   return Bmp::resizeImage(width, height);
+}
+
 }

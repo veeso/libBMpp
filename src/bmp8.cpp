@@ -1,5 +1,5 @@
 /**
- *   libBMPP - Bmp8.hpp
+ *   libBMpp - Bmp8.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -28,7 +28,7 @@
 #include <string>
 #endif
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function Bmp8
@@ -42,9 +42,12 @@ Bmp8::Bmp8() : Bmp() {
 /**
  * @function Bmp
  * @description Bmp class constructor
+ * @param size_t width
+ * @param size_t height
+ * @param uint8_t default color
 **/
 
-Bmp8::Bmp8(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+Bmp8::Bmp8(size_t width, size_t height, uint8_t defaultColor) : Bmp(width, height) {
   //Set bits per pixel
   header->bitsPerPixel = 8;
   //FileSize must be set by child class
@@ -55,6 +58,27 @@ Bmp8::Bmp8(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pi
   header->fileSize = 54 + dataSize;
   //DataSize must be set by child class
   header->dataSize = dataSize;
+  //Create empty image
+  size_t arraySize = header->width * header->height;
+  pixelArray.reserve(arraySize);
+  for (size_t i = 0; i < arraySize; i++) {
+    pixelArray.push_back(new BytePixel(defaultColor));
+  }
+}
+
+/**
+ * @function Bmp8
+ * @description Bmp8 class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp8::Bmp8(const Bmp8& bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp.pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    BytePixel* copyPixel = reinterpret_cast<BytePixel*>(bmp.pixelArray.at(i));
+    pixelArray.push_back(new BytePixel(copyPixel->getValue()));
+  }
 }
 
 /**
@@ -228,19 +252,30 @@ bool Bmp8::resizeImage(size_t width, size_t height) {
 /**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @param uint8_t
  * @returns bool
 **/
 
-bool Bmp8::setPixelAt(int row, int column, uint8_t value) {
+bool Bmp8::setPixelAt(size_t row, size_t column, uint8_t value) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;  
+  return setPixelAt(index, value);
+}
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+/**
+ * @function setPixelAt
+ * @description: replace pixel in a certain position with the provided one
+ * @param size_t
+ * @param uint8_t
+ * @returns bool
+**/
+
+bool Bmp8::setPixelAt(size_t index, uint8_t value) {
+  if (index >= pixelArray.size()) {
     return false;
   }
   BytePixel* reqPixel = reinterpret_cast<BytePixel*>(pixelArray.at(index));
@@ -251,31 +286,32 @@ bool Bmp8::setPixelAt(int row, int column, uint8_t value) {
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @returns RGBPixel*
 **/
 
-BytePixel* Bmp8::getPixelAt(int row, int column) {
+BytePixel* Bmp8::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
-
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
   return getPixelAt(index);
 }
 
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
+ * @param size_t
  * @returns RGBPixel*
 **/
 
-BytePixel* Bmp8::getPixelAt(int index) {
+BytePixel* Bmp8::getPixelAt(size_t index) {
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return reinterpret_cast<BytePixel*>(pixelArray.at(index));
+}
+
 }

@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmpparser.cpp
+ *   libBMpp - bmpparser.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License

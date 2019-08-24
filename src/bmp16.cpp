@@ -1,5 +1,5 @@
 /**
- *   libBMPP - Bmp16.hpp
+ *   libBMpp - Bmp16.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -28,7 +28,7 @@
 #include <string>
 #endif
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function Bmp16
@@ -42,9 +42,12 @@ Bmp16::Bmp16() : Bmp() {
 /**
  * @function Bmp
  * @description Bmp class constructor
+ * @param size_t width
+ * @param size_t height
+ * @param uint16_t default color
 **/
 
-Bmp16::Bmp16(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+Bmp16::Bmp16(size_t width, size_t height, uint16_t defaultColor) : Bmp(width, height) {
   //Set bits per pixel
   header->bitsPerPixel = 8;
   //FileSize must be set by child class
@@ -55,6 +58,27 @@ Bmp16::Bmp16(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(
   header->fileSize = 54 + dataSize;
   //DataSize must be set by child class
   header->dataSize = dataSize;
+  //Create empty image
+  size_t arraySize = header->width * header->height;
+  pixelArray.reserve(arraySize);
+  for (size_t i = 0; i < arraySize; i++) {
+    pixelArray.push_back(new WordPixel(defaultColor));
+  }
+}
+
+/**
+ * @function Bmp16
+ * @description Bmp16 class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp16::Bmp16(const Bmp16& bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp.pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    WordPixel* copyPixel = reinterpret_cast<WordPixel*>(bmp.pixelArray.at(i));
+    pixelArray.push_back(new WordPixel(copyPixel->getValue()));
+  }
 }
 
 /**
@@ -231,19 +255,30 @@ bool Bmp16::resizeImage(size_t width, size_t height) {
 /**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @param uint16_t
  * @returns bool
 **/
 
-bool Bmp16::setPixelAt(int row, int column, uint16_t value) {
+bool Bmp16::setPixelAt(size_t row, size_t column, uint16_t value) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
+  return setPixelAt(index, value);
+}
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+/**
+ * @function setPixelAt
+ * @description: replace pixel in a certain position with the provided one
+ * @param size_t
+ * @param uint16_t
+ * @returns bool
+**/
+
+bool Bmp16::setPixelAt(size_t index, uint16_t value) {
+  if (index >= pixelArray.size()) {
     return false;
   }
   WordPixel* reqPixel = reinterpret_cast<WordPixel*>(pixelArray.at(index));
@@ -254,34 +289,31 @@ bool Bmp16::setPixelAt(int row, int column, uint16_t value) {
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @returns WordPixel*
 **/
 
-WordPixel* Bmp16::getPixelAt(int row, int column) {
+WordPixel* Bmp16::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
-
-  if (index >= static_cast<int>(pixelArray.size())) {
-    return nullptr;
-  }
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
   return getPixelAt(index);
 }
 
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
+ * @param size_t
  * @returns WordPixel*
 **/
 
-WordPixel* Bmp16::getPixelAt(int index) {
-
-  if (index >= static_cast<int>(pixelArray.size())) {
+WordPixel* Bmp16::getPixelAt(size_t index) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return reinterpret_cast<WordPixel*>(pixelArray.at(index));
+}
+
 }

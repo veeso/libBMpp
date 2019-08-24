@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp.cpp
+ *   libBMpp - bmp.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -48,11 +48,11 @@ Bmp::Bmp() {
 /**
  * @function Bmp
  * @description Bmp class constructor
+ * @param size_t width
+ * @param size_t height
 **/
 
-Bmp::Bmp(std::vector<Pixel*> pixelArray, size_t width, size_t height) {
-  //Set pixelArray
-  this->pixelArray = pixelArray;
+Bmp::Bmp(size_t width, size_t height) {
   //Create Header
   header = new Header();
   header->bmpId = BMP_ID;
@@ -61,7 +61,21 @@ Bmp::Bmp(std::vector<Pixel*> pixelArray, size_t width, size_t height) {
   header->height = height;
   //DataSize must be set by child class
   //bitsPerPixel must be set by child class
-  header->printSizeW = 
+  header->paletteSize = 0;
+  header->importantColors = 0;
+}
+
+/**
+ * @function Bmp
+ * @description Bmp class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp::Bmp(const Bmp& bmp) {
+  header = new Header();
+  header->bmpId = BMP_ID;
+  header->width = bmp.header->width;
+  header->height = bmp.header->height;
   header->paletteSize = 0;
   header->importantColors = 0;
 }

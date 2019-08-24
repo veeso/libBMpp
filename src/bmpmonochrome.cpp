@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmpmonochrome.hpp
+ *   libBMpp - bmpmonochrome.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -28,7 +28,7 @@
 #include <string>
 #endif
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function Bmpmonochrome
@@ -44,7 +44,7 @@ Bmpmonochrome::Bmpmonochrome() : Bmp() {
  * @description Bmp class constructor
 **/
 
-Bmpmonochrome::Bmpmonochrome(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+Bmpmonochrome::Bmpmonochrome(size_t width, size_t height, uint8_t defaultColor) : Bmp(width, height) {
   //Set bits per pixel
   header->bitsPerPixel = 1;
   //FileSize must be set by child class
@@ -55,8 +55,28 @@ Bmpmonochrome::Bmpmonochrome(std::vector<Pixel*> pixelArray, size_t width, size_
   header->fileSize = 54 + dataSize;
   //DataSize must be set by child class
   header->dataSize = dataSize;
+  //Create empty image
+  size_t arraySize = header->width * header->height;
+  pixelArray.reserve(arraySize);
+  for (size_t i = 0; i < arraySize; i++) {
+    pixelArray.push_back(new BWPixel(defaultColor));
+  }
 }
 
+/**
+ * @function Bmpmonochrome
+ * @description Bmpmonochrome class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmpmonochrome::Bmpmonochrome(const Bmpmonochrome& bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp.pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    BWPixel* copyPixel = reinterpret_cast<BWPixel*>(bmp.pixelArray.at(i));
+    pixelArray.push_back(new BWPixel(copyPixel->getValue()));
+  }
+}
 
 /**
  * @function ~Bmpmonochrome
@@ -250,21 +270,33 @@ bool Bmpmonochrome::resizeImage(size_t width, size_t height) {
 /**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @param uint8_t
  * @param uint8_t
  * @param uint8_t
  * @returns bool
 **/
 
-bool Bmpmonochrome::setPixelAt(int row, int column, uint8_t value) {
-
+bool Bmpmonochrome::setPixelAt(size_t row, size_t column, uint8_t value) {
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
+  return setPixelAt(index, value);
+}
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+/**
+ * @function setPixelAt
+ * @description: replace pixel in a certain position with the provided one
+ * @param size_t
+ * @param uint8_t
+ * @param uint8_t
+ * @param uint8_t
+ * @returns bool
+**/
+
+bool Bmpmonochrome::setPixelAt(size_t index, uint8_t value) {
+  if (index >= pixelArray.size()) {
     return false;
   }
   BWPixel* reqPixel = reinterpret_cast<BWPixel*>(pixelArray.at(index));
@@ -275,18 +307,18 @@ bool Bmpmonochrome::setPixelAt(int row, int column, uint8_t value) {
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @returns BWPixel*
 **/
 
-BWPixel* Bmpmonochrome::getPixelAt(int row, int column) {
+BWPixel* Bmpmonochrome::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
   int reversedRow = (header->height - 1 - row); // h - 1 - r
   int index = (header->width * reversedRow) + column;
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return getPixelAt(index);
@@ -295,14 +327,16 @@ BWPixel* Bmpmonochrome::getPixelAt(int row, int column) {
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
+ * @param size_t
  * @returns BWPixel*
 **/
 
-BWPixel* Bmpmonochrome::getPixelAt(int index) {
+BWPixel* Bmpmonochrome::getPixelAt(size_t index) {
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return reinterpret_cast<BWPixel*>(pixelArray.at(index));
+}
+
 }

@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bmp32.hpp
+ *   libBMpp - bmp32.hpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -46,7 +46,7 @@ Bmp32::Bmp32() : Bmp() {
  * @description Bmp class constructor
 **/
 
-Bmp32::Bmp32(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(pixelArray, width, height) {
+Bmp32::Bmp32(size_t width, size_t height, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) : Bmp(width, height) {
   //Set bits per pixel
   header->bitsPerPixel = 24;
   //FileSize must be set by child class
@@ -57,6 +57,27 @@ Bmp32::Bmp32(std::vector<Pixel*> pixelArray, size_t width, size_t height) : Bmp(
   header->fileSize = 54 + dataSize;
   //DataSize must be set by child class
   header->dataSize = dataSize;
+  //Create empty image
+  size_t arraySize = header->width * header->height;
+  pixelArray.reserve(arraySize);
+  for (size_t i = 0; i < arraySize; i++) {
+    pixelArray.push_back(new RGBAPixel(red, green, blue, alpha));
+  }
+}
+
+/**
+ * @function Bmp32
+ * @description Bmp32 class copy constructor
+ * @param const Bmp& bmp
+ */
+
+Bmp32::Bmp32(const Bmp32& bmp) : Bmp(bmp) {
+  //Copy pixel array to new bmp
+  size_t arraySize = bmp.pixelArray.size();
+  for (size_t i = 0; i < arraySize; i++) {
+    RGBAPixel* copyPixel = reinterpret_cast<RGBAPixel*>(bmp.pixelArray.at(i));
+    pixelArray.push_back(new RGBAPixel(copyPixel->getRed(), copyPixel->getGreen(), copyPixel->getBlue(), copyPixel->getAlpha()));
+  }
 }
 
 /**
@@ -157,8 +178,8 @@ uint8_t* Bmp32::encodeBmp(size_t* dataSize) {
 /**
  * @function setPixelAt
  * @description: replace pixel in a certain position with the provided one
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @param uint8_t
  * @param uint8_t
  * @param uint8_t
@@ -166,13 +187,27 @@ uint8_t* Bmp32::encodeBmp(size_t* dataSize) {
  * @returns bool
 **/
 
-bool Bmp32::setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
+bool Bmp32::setPixelAt(size_t row, size_t column, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
+  return setPixelAt(index, red, green, blue, alpha);
+}
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+/**
+ * @function setPixelAt
+ * @description: replace pixel in a certain position with the provided one
+ * @param size_t
+ * @param uint8_t
+ * @param uint8_t
+ * @param uint8_t
+ * @param uint8_t
+ * @returns bool
+**/
+
+bool Bmp32::setPixelAt(size_t index, uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) {
+  if (index >= pixelArray.size()) {
     return false;
   }
   RGBAPixel* reqPixel = reinterpret_cast<RGBAPixel*>(pixelArray.at(index));
@@ -183,33 +218,29 @@ bool Bmp32::setPixelAt(int row, int column, uint8_t red, uint8_t green, uint8_t 
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
- * @param int
+ * @param size_t
+ * @param size_t
  * @returns RGBPixel*
 **/
 
-RGBAPixel* Bmp32::getPixelAt(int row, int column) {
+RGBAPixel* Bmp32::getPixelAt(size_t row, size_t column) {
 
   //Get index, considering that pixels are stored bottom to top
-  int reversedRow = (header->height - 1 - row); // h - 1 - r
-  int index = (header->width * reversedRow) + column;
-
-  if (index >= static_cast<int>(pixelArray.size())) {
-    return nullptr;
-  }
+  size_t reversedRow = (header->height - 1 - row); // h - 1 - r
+  size_t index = (header->width * reversedRow) + column;
   return getPixelAt(index);
 }
 
 /**
  * @function getPixelAt
  * @description return pointer to pixel in the provided position
- * @param int
+ * @param size_t
  * @returns RGBPixel*
 **/
 
-RGBAPixel* Bmp32::getPixelAt(int index) {
+RGBAPixel* Bmp32::getPixelAt(size_t index) {
 
-  if (index >= static_cast<int>(pixelArray.size())) {
+  if (index >= pixelArray.size()) {
     return nullptr;
   }
   return reinterpret_cast<RGBAPixel*>(pixelArray.at(index));
@@ -218,7 +249,7 @@ RGBAPixel* Bmp32::getPixelAt(int index) {
 /**
  * @function toGreyScale
  * @description: convert bitmap to greyscaleArea; if greyLevels is set, provided amount of greys will be used
- * @param int
+ * @param size_t
  * @returns bool
 **/
 
