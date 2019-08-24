@@ -98,3 +98,5 @@ libtool
 #Artifacts
 test/*/bmpTest*
 src/.libs/
+test/complex/complex
+
