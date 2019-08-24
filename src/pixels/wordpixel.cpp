@@ -1,5 +1,5 @@
 /**
- *   libBMPP - Wordpixel.cpp
+ *   libBMpp - Wordpixel.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -23,7 +23,7 @@
 
 #include <pixels/wordpixel.hpp>
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function WordPixel
@@ -53,4 +53,6 @@ void WordPixel::setPixel(uint16_t value) {
 
 uint16_t WordPixel::getValue() {
   return value;
+}
+
 }

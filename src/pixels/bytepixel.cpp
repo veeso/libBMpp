@@ -1,5 +1,5 @@
 /**
- *   libBMPP - BytePixel.cpp
+ *   libBMpp - BytePixel.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -23,7 +23,7 @@
 
 #include <pixels/bytepixel.hpp>
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function BytePixel
@@ -53,4 +53,6 @@ void BytePixel::setPixel(uint8_t value) {
 
 uint8_t BytePixel::getValue() {
   return value;
+}
+
 }

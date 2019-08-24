@@ -1,5 +1,5 @@
 /**
- *   libBMPP - bwpixel.cpp
+ *   libBMpp - bwpixel.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -23,7 +23,7 @@
 
 #include <pixels/bwpixel.hpp>
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function BWPixel
@@ -57,4 +57,6 @@ void BWPixel::setPixel(uint8_t value) {
 
 uint8_t BWPixel::getValue() {
   return value;
+}
+
 }

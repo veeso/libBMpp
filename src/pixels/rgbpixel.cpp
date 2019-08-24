@@ -1,5 +1,5 @@
 /**
- *   libBMPP - rgbpixel.cpp
+ *   libBMpp - rgbpixel.cpp
  *   Developed by Christian Visintin
  * 
  * MIT License
@@ -23,7 +23,7 @@
 
 #include <pixels/rgbpixel.hpp>
 
-using namespace bmp;
+namespace bmp {
 
 /**
  * @function RGBPixel
@@ -81,4 +81,6 @@ uint8_t RGBPixel::getGreen() {
 
 uint8_t RGBPixel::getBlue() {
   return blue;
+}
+
 }
