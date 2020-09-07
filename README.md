@@ -6,7 +6,7 @@
 Lib **BitMaplusplus**  
 Developed by *Christian Visintin*
 
-Version 1.1.0 (24/08/2019)
+Version 1.1.1 (07/09/2019)
 
 ---
 
@@ -379,6 +379,10 @@ bmp::Bmp* getBmp(uint8_t* data, size_t dataSize, size_t& bitsPerPixel);
 ---
 
 ## Changelog
+
+### 1.1.1 (07/09/2020)
+
+- Added missing ```#include <string>``` in bmp.hpp
 
 ### 1.1.0 (24/08/2019)
 

@@ -29,6 +29,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <string>
 #include <vector>
 
 namespace bmp {
