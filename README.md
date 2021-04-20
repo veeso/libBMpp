@@ -1,6 +1,6 @@
 # libBmpp
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBmpp.svg)](https://github.com/ChristianVisintin/libBmpp) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBmpp.svg)](https://github.com/ChristianVisintin/libBmpp) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/libBmpp/issues)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/libBmpp.svg)](https://github.com/veesp/libBmpp) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/libBmpp.svg)](https://github.com/veesp/libBmpp) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/veesp/libBmpp/issues)
 
 Lib **BitMaplusplus**  
 Developed by *Christian Visintin*
